@@ -1,104 +1,127 @@
 # Exploracao-Vulnerabilidade-HTTP
-# Relatório Técnico: Exploração de Vulnerabilidades em Protocolos de Aplicação (HTTP Sniffing)
+# 🛡️ PoC: Exploração de Vulnerabilidades em Redes Wireless (Captive Portal Phishing)
 
-**Disciplina:** Redes de Computadores II  
+**Instituição:** [Nome da Sua Faculdade/Universidade]  
 **Curso:** Sistemas de Informação  
-**Data:** 19/11/2025  
-
-## 1. Objetivo do Projeto
-Este laboratório tem como objetivo demonstrar, em ambiente controlado, a insegurança intrínseca do protocolo **HTTP (Hypertext Transfer Protocol)** quando utilizado para tráfego de dados sensíveis sem criptografia.
-
-O projeto visa explorar a captura de credenciais (usuário e senha) através da intercepção e análise de tráfego de rede, evidenciando a necessidade de implementação de camadas de segurança como TLS/SSL (HTTPS).
+**Disciplina:** Redes de Computadores II  
+**Data de Entrega:** 19/11/2025  
 
 ---
 
-## 2. Topologia e Infraestrutura
-Para a realização do experimento, foi configurado um ambiente virtualizado isolado:
+## 📑 Sumário Executivo
+Este projeto consiste na implementação de uma Prova de Conceito (PoC) para demonstrar vulnerabilidades críticas em redes Wi-Fi públicas e protocolos de aplicação não criptografados (HTTP). 
 
-* **Host (Máquina Física):** Windows 10/11 atuando como Provedor de Acesso (Soft AP / Hotspot Móvel).
-* **Interface de Rede:** Adaptador Wireless USB Intelbras IWA 3001 (Chipset Realtek).
-* **Máquina Atacante (Virtual):** Kali Linux 2024.x rodando sobre Oracle VirtualBox.
-    * *Configuração de Rede:* Modo Bridge (Ponte) com o adaptador virtual do Host.
-* **Vítima:** Dispositivo Móvel (Smartphone) ou Browser Desktop na mesma sub-rede lógica.
-* **Ferramentas Utilizadas:**
-    * **Python `http.server`:** Para hospedagem do servidor de Phishing.
-    * **Wireshark/Tcpdump:** Para captura e análise de pacotes (Packet Sniffing).
-    * **HTML/CSS:** Para clonagem da interface de autenticação (Engenharia Social).
+O objetivo central foi simular um cenário de **Rogue Access Point (Ponto de Acesso Falso)** combinado com técnicas de **Engenharia Social**, visando a captura de credenciais e dados pessoais (PII) de usuários desavisados.
 
 ---
 
-## 3. Metodologia e Execução do Ataque
+## ⚠️ Aviso Legal (Disclaimer)
+Este projeto foi desenvolvido estritamente para **fins acadêmicos e educacionais**. Todas as simulações foram realizadas em ambiente controlado, utilizando dispositivos de propriedade dos membros do grupo e dados fictícios (*mock data*). O grupo não se responsabiliza pelo uso indevido das ferramentas ou técnicas aqui descritas.
 
-### 3.1. Análise de Restrições (Justificativa Técnica)
-Inicialmente, o grupo planejou a execução de um ataque *Man-in-the-Middle* (MITM) via envenenamento de cache ARP (*ARP Spoofing*). No entanto, durante a fase de reconhecimento, identificou-se que o driver de "Hotspot Móvel" do sistema operacional Host implementa, por padrão, o recurso de **Isolamento de Cliente (Client Isolation/AP Isolation)**.
+---
 
-Esta medida de segurança impede a comunicação direta na Camada 2 (Enlace) entre dispositivos conectados ao mesmo SSID, mitigando ataques de ARP Spoofing e impedindo o roteamento de pacotes através da máquina atacante.
+## 🛠️ Topologia e Ambiente de Testes
 
-### 3.2. Adaptação do Vetor de Ataque (Phishing + Sniffing)
-Para contornar a restrição de infraestrutura e cumprir o objetivo pedagógico de capturar credenciais HTTP, adotou-se um vetor de ataque baseado em **Engenharia Social e Phishing Direto em Rede Local**.
+Para a execução do laboratório, foi configurada a seguinte infraestrutura:
 
-**Passo a Passo da Execução:**
+* **Host (Infraestrutura de Rede):**
+    * Sistema Operacional: Windows 10/11.
+    * Hardware de Rede: Adaptador Wireless USB (Intelbras IWA 3001).
+    * Função: Provedor de acesso via SoftAP (Hotspot Móvel).
+    
+* **Máquina Atacante (Virtual Machine):**
+    * Sistema Operacional: Kali Linux (Rolling Release).
+    * Virtualização: Oracle VirtualBox (Rede em modo *Bridge*).
+    * Endereçamento IP: Estático na sub-rede `192.168.137.0/24`.
 
-1.  **Levantamento do Servidor Falso:**
-    Foi desenvolvido um clone de uma página de login bancária (`index.html`) hospedado na máquina Kali Linux através do módulo HTTP do Python, escutando na porta 80:
+* **Dispositivo Vítima:**
+    * Hardware: Smartphone Android 
+    * Conexão: Wi-Fi (WLAN).
+
+---
+
+## ⚙️ Metodologia do Ataque
+
+### 1. Análise de Restrições Técnicas
+Inicialmente, planejou-se a execução de ataques de camada 2 (Enlace), especificamente *ARP Spoofing*, para realizar um ataque *Man-in-the-Middle* (MITM). 
+
+Contudo, identificou-se que o driver de Hotspot do Windows implementa nativamente o recurso de **Isolamento de Cliente (Client Isolation)**, impedindo o roteamento de tráfego entre clientes conectados ao mesmo SSID. Isso inviabilizou o redirecionamento automático via envenenamento de cache ARP.
+
+### 2. Adaptação Estratégica (O Vetor de Ataque)
+Para contornar a restrição de hardware e cumprir o objetivo de capturar credenciais HTTP, adotou-se uma abordagem híbrida de **Engenharia Social + Phishing Local**:
+
+1.  **Clonagem de Interface (Front-End):**
+    Desenvolvemos uma página HTML/CSS responsiva simulando um "Portal de Autenticação Wi-Fi Corporativo", solicitando Nome, E-mail e CPF/Telefone para "liberar a navegação".
+
+2.  **Hospedagem do Payload:**
+    Utilizamos o módulo `http.server` do Python para hospedar o portal falso na porta 80 da máquina atacante (Kali Linux).
+
+3.  **Indução via QR Code (O Gatilho):**
+    Para simular a experiência de um *Walled Garden* (Portal Cativo), geramos QR Codes distribuídos fisicamente no ambiente, instruindo a vítima a escanear o código para validar seu acesso à rede. O QR Code contém o link direto para o servidor malicioso (`http://IP_DO_ATACANTE`).
+
+4.  **Captura Passiva (Sniffing):**
+    Com a vítima acessando o servidor hospedado na própria máquina atacante, utilizamos o **Wireshark** escutando a interface `eth0` para interceptar as requisições HTTP POST.
+
+---
+
+## 📊 Resultados e Evidências
+
+A execução foi bem-sucedida. Ao preencher o formulário falso, o navegador da vítima enviou os dados em texto plano (*Cleartext*), comprovando a ausência de criptografia na camada de transporte.
+
+### Evidência 1: Interface Maliciosa
+Abaixo, a interface apresentada à vítima no momento da conexão:
+
+![Imagem do WhatsApp de 2025-11-18 à(s) 13 17 31_b168591b](https://github.com/user-attachments/assets/7f9ee375-421f-40ff-8385-3a8a97262664)
+
+
+### Evidência 2: Análise de Pacotes (.pcap)
+A captura de tráfego revela o conteúdo do pacote HTTP POST. Os campos sensíveis estão plenamente visíveis no payload `HTML Form URL Encoded`:
+
+* **Nome:** `[Dado Capturado]`
+* **Email:** `[Dado Capturado]`
+* **CPF:** `[Dado Capturado]`
+
+*(Arraste aqui o print do Wireshark mostrando os dados)*
+
+> **Nota de Privacidade:** O arquivo `.pcap` anexado a este repositório foi sanitizado. Dados reais de infraestrutura (MAC/IP) foram anonimizados utilizando a ferramenta `tcprewrite` para conformidade com as boas práticas de segurança.
+
+---
+
+## 🛡️ Contramedidas e Recomendações
+
+Com base na vulnerabilidade explorada, recomendamos as seguintes mitigações:
+
+1.  **Uso Obrigatório de HTTPS (TLS/SSL):**
+    A implementação de certificados SSL no servidor web garantiria que, mesmo em caso de interceptação ou acesso a sites falsos, o conteúdo dos dados estaria ilegível para o atacante.
+
+2.  **Educação em Segurança (Security Awareness):**
+    Treinar usuários para não escanear QR Codes de fontes desconhecidas e verificar a URL na barra de endereços. Endereços IP numéricos (ex: `192.168...`) em vez de domínios (ex: `wifi.empresa.com`) são fortes indícios de ataque.
+
+3.  **Uso de VPN (Rede Privada Virtual):**
+    Ao utilizar redes Wi-Fi públicas, o uso de VPN cria um túnel criptografado, impedindo a leitura de dados por terceiros na rede local.
+
+---
+
+## 🚀 Como Reproduzir
+
+1.  Clone este repositório:
     ```bash
-    sudo python3 -m http.server 80
+    git clone [https://github.com/](https://github.com/)[SEU_USUARIO]/Exploracao-Vulnerabilidade-HTTP.git
     ```
-
-2.  **Indução da Vítima:**
-    A vítima, conectada à rede Wi-Fi do laboratório, foi induzida a acessar o endereço IP do servidor atacante (simulando um link malicioso enviado por e-mail ou QR Code de validação de rede).
-
-3.  **Captura de Tráfego (Sniffing):**
-    Utilizando o **Wireshark** na interface `eth0` do atacante, iniciou-se a escuta passiva de todo o tráfego de entrada. Como o servidor web reside na própria máquina de captura, o bloqueio de *Client Isolation* não se aplica ao tráfego destinado legitimamente ao servidor.
-
-4.  **Filtragem e Extração:**
-    O tráfego capturado foi filtrado pelo método de requisição:
-    `http.request.method == POST`
-
----
-
-## 4. Resultados e Evidências
-
-A execução do ataque foi bem-sucedida. Ao submeter o formulário na página falsa, o navegador da vítima enviou os dados via método POST.
-
-Como o protocolo utilizado foi o **HTTP (Porta 80)**, os dados não sofreram encapsulamento criptográfico.
-
-### Evidência 1: Interface do Site Falso
-*(Insira aqui o print da sua tela de login "Banco XYZ")*
-
-### Evidência 2: Captura Wireshark (A Prova)
-O arquivo `.pcap` anexado demonstra a captura do pacote. A análise do payload `HTML Form URL Encoded` revela as credenciais em texto claro (*Cleartext*):
-
-* **Campo `usuario`:** [Valor capturado]
-* **Campo `senha`:** [Valor capturado]
-
-*(Insira aqui o print do Wireshark com a seta apontando para a senha)*
+2.  Acesse o diretório do projeto:
+    ```bash
+    cd Exploracao-Vulnerabilidade-HTTP
+    ```
+3.  Execute o script de inicialização do servidor (no Kali Linux):
+    ```bash
+    chmod +x iniciar_servidor.sh
+    ./iniciar_servidor.sh
+    ```
+4.  Em um dispositivo na mesma rede, acesse o IP da máquina atacante e monitore o tráfego.
 
 ---
 
-## 5. Análise de Vulnerabilidade e Contramedidas
-
-O experimento comprovou que a segurança da camada de transporte é crítica. A ausência de criptografia permite que qualquer nó intermediário (roteadores, switches ou sniffers na mesma rede de colisão) leia o conteúdo das mensagens.
-
-### Contramedidas Recomendadas (Defesa)
-
-1.  **Implementação de HTTPS (TLS/SSL):**
-    * **Como funciona:** Utiliza certificados digitais para estabelecer um túnel criptografado entre cliente e servidor.
-    * **Eficácia:** Mesmo que o atacante capture o pacote (como fizemos), o conteúdo (payload) estaria ilegível (ex: `A8f#9kL...`), protegendo a senha.
-
-2.  **HSTS (HTTP Strict Transport Security):**
-    * **Como funciona:** O servidor instrui o navegador a *nunca* aceitar conexões HTTP inseguras, forçando o redirecionamento para HTTPS automaticamente. Isso mitigaria tentativas de downgrade ou acesso a links inseguros.
-
-3.  **Validação de Endpoint (Educação do Usuário):**
-    * Verificar sempre a URL na barra de endereços. Endereços IP numéricos (ex: `192.168...`) ou domínios sem o cadeado de segurança não devem ser utilizados para inserção de credenciais.
-
----
-
-## 6. Como Reproduzir este Laboratório
-
-1.  Clone este repositório.
-2.  Em uma máquina Linux (Kali/Ubuntu), navegue até a pasta do projeto.
-3.  Execute o servidor:
-    `sudo python3 -m http.server 80`
-4.  Em outra máquina na mesma rede, acesse o IP do servidor pelo navegador.
-5.  Monitore o tráfego com Wireshark ou Tcpdump.
+**Autores:**
+* Kayan Paiva Pereira
+* [Nome do Amigo 2]
+* [Nome do Amigo 3]
