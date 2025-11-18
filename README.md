@@ -105,18 +105,11 @@ cd NOME-DO-REPO
 # 3. Execute o servidor (Requer Python 3)
 chmod +x scripts/run_server.sh
 sudo ./scripts/run_server.sh
-
------
 <div align="center">
 
-👨‍💻 Autores
-Kayan Paiva Pereira
+👨‍💻 Desenvolvido por
+Kayan Paiva Pereira • [Nome Amigo 2] • [Nome Amigo 3] • [Nome Amigo 4]
 
-[Nome do Amigo 2]
+Trabalho apresentado ao curso de Sistemas de Informação - Novembro/2025
 
-[Nome do Amigo 3]
-
-[Nome do Amigo 4]
-
-Trabalho apresentado ao curso de Sistemas de Informação - Novembro/2025.
 </div>
