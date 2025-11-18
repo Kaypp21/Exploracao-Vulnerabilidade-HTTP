@@ -105,6 +105,8 @@ cd NOME-DO-REPO
 # 3. Execute o servidor (Requer Python 3)
 chmod +x scripts/run_server.sh
 sudo ./scripts/run_server.sh
+```
+
 <div align="center">
 
 👨‍💻 Desenvolvido por
