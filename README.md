@@ -1,127 +1,125 @@
 # Exploracao-Vulnerabilidade-HTTP
-# 🛡️ PoC: Exploração de Vulnerabilidades em Redes Wireless (Captive Portal Phishing)
+# 🛡️ PoC: Vulnerability Assessment & Credential Harvesting em Redes Wireless
 
-**Instituição:** [Nome da Sua Faculdade/Universidade]  
-**Curso:** Sistemas de Informação  
-**Disciplina:** Redes de Computadores II  
-**Data de Entrega:** 19/11/2025  
+![Status](https://img.shields.io/badge/Status-Concluído-success)
+![Language](https://img.shields.io/badge/Linguagem-HTML%2FPython-blue)
+![Focus](https://img.shields.io/badge/Foco-Network%20Security-red)
+![License](https://img.shields.io/badge/License-Academic-lightgrey)
+
+> **⚠️ AVISO LEGAL (DISCLAIMER)**
+> Este repositório contém documentação e códigos desenvolvidos estritamente para fins acadêmicos na disciplina de **Redes de Computadores II**. Todas as demonstrações foram realizadas em ambiente controlado (Laboratório Virtual), utilizando dados fictícios (*mock data*) e dispositivos de propriedade dos autores. A interceptação de tráfego de terceiros sem consentimento é ilegal.
 
 ---
 
 ## 📑 Sumário Executivo
-Este projeto consiste na implementação de uma Prova de Conceito (PoC) para demonstrar vulnerabilidades críticas em redes Wi-Fi públicas e protocolos de aplicação não criptografados (HTTP). 
+Este projeto apresenta uma Prova de Conceito (PoC) sobre a insegurança do protocolo **HTTP** em redes Wi-Fi públicas. O experimento simula um **Rogue Access Point** (Ponto de Acesso Malicioso) utilizando técnicas de Engenharia Social para contornar proteções de infraestrutura e capturar credenciais (PII) em texto claro (*Cleartext*).
 
-O objetivo central foi simular um cenário de **Rogue Access Point (Ponto de Acesso Falso)** combinado com técnicas de **Engenharia Social**, visando a captura de credenciais e dados pessoais (PII) de usuários desavisados.
-
----
-
-## ⚠️ Aviso Legal (Disclaimer)
-Este projeto foi desenvolvido estritamente para **fins acadêmicos e educacionais**. Todas as simulações foram realizadas em ambiente controlado, utilizando dispositivos de propriedade dos membros do grupo e dados fictícios (*mock data*). O grupo não se responsabiliza pelo uso indevido das ferramentas ou técnicas aqui descritas.
-
----
-
-## 🛠️ Topologia e Ambiente de Testes
-
-Para a execução do laboratório, foi configurada a seguinte infraestrutura:
-
-* **Host (Infraestrutura de Rede):**
-    * Sistema Operacional: Windows 10/11.
-    * Hardware de Rede: Adaptador Wireless USB (Intelbras IWA 3001).
-    * Função: Provedor de acesso via SoftAP (Hotspot Móvel).
-    
-* **Máquina Atacante (Virtual Machine):**
-    * Sistema Operacional: Kali Linux (Rolling Release).
-    * Virtualização: Oracle VirtualBox (Rede em modo *Bridge*).
-    * Endereçamento IP: Estático na sub-rede `192.168.137.0/24`.
-
-* **Dispositivo Vítima:**
-    * Hardware: Smartphone Android 
-    * Conexão: Wi-Fi (WLAN).
+### 🎯 Objetivos
+1.  Implementar um ambiente controlado de ataque em rede sem fio.
+2.  Demonstrar a vulnerabilidade de interceptação de dados em aplicações web sem criptografia (TLS/SSL).
+3.  Analisar pacotes de rede (`.pcap`) para evidenciar o vazamento de informações.
+4.  Propor medidas defensivas e contramedidas técnicas.
 
 ---
 
-## ⚙️ Metodologia do Ataque
+## 🏗️ Arquitetura e Topologia
 
-### 1. Análise de Restrições Técnicas
-Inicialmente, planejou-se a execução de ataques de camada 2 (Enlace), especificamente *ARP Spoofing*, para realizar um ataque *Man-in-the-Middle* (MITM). 
+A infraestrutura foi desenhada para operar em um cenário de restrição de hardware, adotando uma abordagem híbrida de virtualização.
 
-Contudo, identificou-se que o driver de Hotspot do Windows implementa nativamente o recurso de **Isolamento de Cliente (Client Isolation)**, impedindo o roteamento de tráfego entre clientes conectados ao mesmo SSID. Isso inviabilizou o redirecionamento automático via envenenamento de cache ARP.
+| Componente | Especificação Técnica | Função no Laboratório |
+| :--- | :--- | :--- |
+| **Host Físico** | Windows 10/11 + Adaptador Intelbras IWA 3001 | Provedor de Acesso (SoftAP/Hotspot Móvel) |
+| **Atacante** | Kali Linux (VirtualBox - Modo Bridge) | Servidor Web (Python) + Sniffer (Wireshark) |
+| **Vítima** | Smartphone Android (Samsung S23 Ultra) | Cliente Wireless conectado ao Hotspot |
 
-### 2. Adaptação Estratégica (O Vetor de Ataque)
-Para contornar a restrição de hardware e cumprir o objetivo de capturar credenciais HTTP, adotou-se uma abordagem híbrida de **Engenharia Social + Phishing Local**:
+### 📂 Estrutura do Repositório
+```bash
+├── 📂 src/
+│   └── index.html           # Front-end do Portal Falso (Clonagem de Interface)
+├── 📂 scripts/
+│   └── run_server.sh        # Script de automação do servidor Python (Porta 80)
+├── 📂 evidencias/
+│   ├── captura_anonima.pcap # Arquivo de prova (Sanitizado com tcprewrite)
+│   ├── print_portal.jpg     # Evidência visual da tela de login falsa
+│   └── print_wireshark.jpg  # Evidência da captura da senha
+└── README.md                # Documentação Técnica do Projeto
+⚙️ Metodologia de Execução
+1. Análise de Restrições (Justificativa Técnica)
+O plano inicial previa a execução de um ataque Man-in-the-Middle (MITM) via ARP Spoofing. Contudo, durante a fase de reconhecimento, identificou-se que o driver de Hotspot do Windows implementa nativamente o recurso de Isolamento de Cliente (Client Isolation).
 
-1.  **Clonagem de Interface (Front-End):**
-    Desenvolvemos uma página HTML/CSS responsiva simulando um "Portal de Autenticação Wi-Fi Corporativo", solicitando Nome, E-mail e CPF/Telefone para "liberar a navegação".
+Esta medida de segurança impede o roteamento de quadros de camada 2 entre clientes conectados ao mesmo SSID, mitigando ataques de envenenamento de cache ARP.
 
-2.  **Hospedagem do Payload:**
-    Utilizamos o módulo `http.server` do Python para hospedar o portal falso na porta 80 da máquina atacante (Kali Linux).
+2. Adaptação do Vetor de Ataque
+Para contornar a restrição de isolamento e cumprir o objetivo pedagógico, o grupo adotou uma estratégia de Engenharia Social Assistida:
 
-3.  **Indução via QR Code (O Gatilho):**
-    Para simular a experiência de um *Walled Garden* (Portal Cativo), geramos QR Codes distribuídos fisicamente no ambiente, instruindo a vítima a escanear o código para validar seu acesso à rede. O QR Code contém o link direto para o servidor malicioso (`http://IP_DO_ATACANTE`).
+Deploy do Payload: Hospedagem de uma página de login falsa (simulando um portal de "Wi-Fi Visitante") na porta 80 da máquina atacante.
 
-4.  **Captura Passiva (Sniffing):**
-    Com a vítima acessando o servidor hospedado na própria máquina atacante, utilizamos o **Wireshark** escutando a interface `eth0` para interceptar as requisições HTTP POST.
+Indução (Trigger): Utilização de QR Codes físicos instruindo a vítima a "Escanear para Validar o Acesso". O QR Code aponta diretamente para o IP do atacante na rede local.
 
----
+Sniffing Passivo: Monitoramento da interface de rede eth0 para capturar as requisições HTTP POST enviadas pela vítima ao servidor do atacante.
 
-## 📊 Resultados e Evidências
+📊 Resultados e Análise de Evidências
+A prova de conceito foi bem-sucedida. A ausência de criptografia no protocolo HTTP permitiu a leitura integral dos dados submetidos pelo usuário.
 
-A execução foi bem-sucedida. Ao preencher o formulário falso, o navegador da vítima enviou os dados em texto plano (*Cleartext*), comprovando a ausência de criptografia na camada de transporte.
+📸 Evidência 1: Interface da Vítima
+Abaixo, a interface apresentada ao usuário no momento da conexão, solicitando dados pessoais para "liberação" da rede:
 
-### Evidência 1: Interface Maliciosa
-Abaixo, a interface apresentada à vítima no momento da conexão:
+(Simulação de Portal Corporativo com design responsivo)
 
-![Imagem do WhatsApp de 2025-11-18 à(s) 13 17 31_b168591b](https://github.com/user-attachments/assets/7f9ee375-421f-40ff-8385-3a8a97262664)
+🕵️ Evidência 2: Análise de Pacotes (.pcap)
+A análise do tráfego no Wireshark revela o payload da requisição POST. Como não há túnel TLS (HTTPS), os campos são visíveis em ASCII:
 
+Dados Extraídos (Cleartext):
 
-### Evidência 2: Análise de Pacotes (.pcap)
-A captura de tráfego revela o conteúdo do pacote HTTP POST. Os campos sensíveis estão plenamente visíveis no payload `HTML Form URL Encoded`:
+nome: [DADO CAPTURADO]
 
-* **Nome:** `[Dado Capturado]`
-* **Email:** `[Dado Capturado]`
-* **CPF:** `[Dado Capturado]`
+email: [DADO CAPTURADO]
 
-*(Arraste aqui o print do Wireshark mostrando os dados)*
+cpf/tel: [DADO CAPTURADO]
 
-> **Nota de Privacidade:** O arquivo `.pcap` anexado a este repositório foi sanitizado. Dados reais de infraestrutura (MAC/IP) foram anonimizados utilizando a ferramenta `tcprewrite` para conformidade com as boas práticas de segurança.
+Nota de Privacidade e LGPD: O arquivo .pcap anexado a este repositório foi submetido a um processo de anonimização (sanitização) utilizando a ferramenta tcprewrite. Endereços MAC e IPs reais da infraestrutura foram mascarados e os dados de credenciais são fictícios.
 
----
+🛡️ Contramedidas e Mitigação
+Com base na vulnerabilidade explorada, recomendamos as seguintes defesas:
 
-## 🛡️ Contramedidas e Recomendações
+HTTPS Obrigatório (HSTS):
 
-Com base na vulnerabilidade explorada, recomendamos as seguintes mitigações:
+Servidores web devem implementar HSTS (HTTP Strict Transport Security) para forçar conexões criptografadas. Com HTTPS, os dados capturados no Wireshark estariam ilegíveis.
 
-1.  **Uso Obrigatório de HTTPS (TLS/SSL):**
-    A implementação de certificados SSL no servidor web garantiria que, mesmo em caso de interceptação ou acesso a sites falsos, o conteúdo dos dados estaria ilegível para o atacante.
+Validação de Endpoint:
 
-2.  **Educação em Segurança (Security Awareness):**
-    Treinar usuários para não escanear QR Codes de fontes desconhecidas e verificar a URL na barra de endereços. Endereços IP numéricos (ex: `192.168...`) em vez de domínios (ex: `wifi.empresa.com`) são fortes indícios de ataque.
+Usuários devem ser treinados para verificar a URL. Acessar IPs numéricos (ex: 192.168...) em vez de domínios validados é um forte indício de ataque.
 
-3.  **Uso de VPN (Rede Privada Virtual):**
-    Ao utilizar redes Wi-Fi públicas, o uso de VPN cria um túnel criptografado, impedindo a leitura de dados por terceiros na rede local.
+VPN (Rede Privada Virtual):
 
----
+O uso de VPN em redes públicas cria um túnel criptografado, protegendo os dados mesmo se a rede local estiver comprometida.
 
-## 🚀 Como Reproduzir
+🚀 Como Reproduzir este Laboratório
+Clone o repositório:
 
-1.  Clone este repositório:
-    ```bash
-    git clone [https://github.com/](https://github.com/)[SEU_USUARIO]/Exploracao-Vulnerabilidade-HTTP.git
-    ```
-2.  Acesse o diretório do projeto:
-    ```bash
-    cd Exploracao-Vulnerabilidade-HTTP
-    ```
-3.  Execute o script de inicialização do servidor (no Kali Linux):
-    ```bash
-    chmod +x iniciar_servidor.sh
-    ./iniciar_servidor.sh
-    ```
-4.  Em um dispositivo na mesma rede, acesse o IP da máquina atacante e monitore o tráfego.
+Bash
 
----
+git clone [https://github.com/](https://github.com/)[SEU-USUARIO]/Exploracao-Vulnerabilidade-HTTP.git
+Acesse o diretório:
 
-**Autores:**
-* Kayan Paiva Pereira
-* [Nome do Amigo 2]
-* [Nome do Amigo 3]
+Bash
+
+cd Exploracao-Vulnerabilidade-HTTP
+Execute o servidor (No Kali Linux):
+
+Bash
+
+chmod +x scripts/run_server.sh
+./scripts/run_server.sh
+Acesse via Cliente: Conecte outro dispositivo na mesma rede e acesse o IP da máquina atacante via navegador.
+
+👨‍💻 Autores
+Kayan Paiva Pereira
+
+[Nome do Amigo 2]
+
+[Nome do Amigo 3]
+
+[Nome do Amigo 4]
+
+Trabalho apresentado ao curso de Sistemas de Informação - Novembro/2025.
