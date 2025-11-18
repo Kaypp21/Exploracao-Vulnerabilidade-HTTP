@@ -65,7 +65,7 @@ Para contornar o bloqueio, alteramos o vetor de ataque para **Phishing Assistido
 <div align="center">
 <br>
 
-🚧 ARRASTE O PRINT DO SITE FALSO AQUI E APAGUE ESTA LINHA 🚧
+![print_portal](https://github.com/user-attachments/assets/a27023d7-e74c-4842-b987-c28574f6eef1)
 
 <br>
 </div>
@@ -90,11 +90,14 @@ Como não há túnel criptografado (HTTPS), os dados extraídos do arquivo `.pca
 ```yaml
 [+] DADOS INTERCEPTADOS:
 ------------------------
-Nome:     Kayan Paiva
-Email:    usuario@exemplo.com
-CPF:      123.456.789-00
-🔒 Nota de Privacidade: O arquivo .pcap anexado foi sanitizado via tcprewrite para mascarar IPs e MACs reais da infraestrutura.🛡️ 6. Contramedidas (Como se proteger)VulnerabilidadeSolução TécnicaFalta de CriptografiaImplementação de HTTPS (HSTS) obrigatório.Phishing LocalValidação de Endpoint. Nunca inserir dados em IPs numéricos.Sniffing em Wi-FiUso de VPN para encapsular o tráfego em túnel seguro.🚀 7. Como ReproduzirBash# 1. Clone o repositório
-git clone [https://github.com/SEU-USUARIO/NOME-DO-REPO.git](https://github.com/SEU-USUARIO/NOME-DO-REPO.git)
+Nome:     
+Email:    
+CPF:      
+
+🔒 Nota de Privacidade: O arquivo .pcap anexado foi sanitizado via tcprewrite para mascarar IPs e MACs reais da infraestrutura.🛡️ 6. Contramedidas (Como se proteger)VulnerabilidadeSolução TécnicaFalta de CriptografiaImplementação de HTTPS (HSTS) obrigatório.Phishing LocalValidação de Endpoint. Nunca inserir dados em IPs numéricos.Sniffing em Wi-FiUso de VPN para encapsular o tráfego em túnel seguro.
+
+🚀 7. Como ReproduzirBash# 1. Clone o repositório
+git clone [https://github.com/Kaypp21/Exploracao-Vulnerabilidade-HTTP](https://github.com/Kaypp21/Exploracao-Vulnerabilidade-HTTP)
 
 # 2. Entre na pasta
 cd NOME-DO-REPO
@@ -104,15 +107,7 @@ chmod +x scripts/run_server.sh
 sudo ./scripts/run_server.sh
 
 -----
-
-### 🎨 O que você precisa fazer agora (Checklist Final):
-
-1.  **Copie** o código acima e cole no seu GitHub.
-2.  **Substitua** onde diz `[Nome Amigo]` pelos nomes reais.
-3.  **Substitua** onde diz `SEU-USUARIO` pelo seu link do Git.
-4.  **O Mais Importante:**
-      * Apague a frase `🚧 ARRASTE O PRINT...`
-      * **Arraste a foto** do seu computador para aquele espaço em branco.
+<div align="center">
 
 👨‍💻 Autores
 Kayan Paiva Pereira
@@ -124,3 +119,4 @@ Kayan Paiva Pereira
 [Nome do Amigo 4]
 
 Trabalho apresentado ao curso de Sistemas de Informação - Novembro/2025.
+</div>
