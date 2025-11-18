@@ -59,7 +59,7 @@ A tabela a seguir apresenta as duas ferramentas visuais utilizadas na simulaçã
 | 1. QR Code de Conexão (Fase de Engano) | 2. QR Code de Validação (O Gatilho) |
 | :---: | :---: |
 | **Função:** Simula um acesso legítimo à rede e credibilidade. | **Função:** Redireciona a vítima ao IP do atacante (O ataque). |
-| ![Imagem do WhatsApp de 2025-11-18 à(s) 20 21 09_82ca3f28](https://github.com/user-attachments/assets/db48283d-af50-4adf-a4b0-ebf793f5e42c)| ![Imagem do WhatsApp de 2025-11-18 à(s) 20 21 09_f0697098](https://github.com/user-attachments/assets/d42fe7ce-1d83-46a1-aec0-2aef128e798f)|
+| ![Imagem do WhatsApp de 2025-11-18 à(s) 20 21 09_82ca3f28](https://github.com/user-attachments/assets/db48283d-af50-4adf-a4b0-ebf793f5e42c)| ![Imagem do WhatsApp de 2025-11-18 à(s) 20 20 14_afaf14ba](https://github.com/user-attachments/assets/9539c862-abc1-4f0b-8f35-b9ef2b9da797)|
 
 <p>
     <i>O escaneamento do código da direita é a ação crítica que inicia a captura das credenciais.</i>
