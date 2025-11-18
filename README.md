@@ -1,117 +1,118 @@
 # Exploracao-Vulnerabilidade-HTTP
-# 🛡️ PoC: Vulnerability Assessment & Credential Harvesting em Redes Wireless
+<div align="center">
 
-![Status](https://img.shields.io/badge/Status-Concluído-success)
-![Language](https://img.shields.io/badge/Linguagem-HTML%2FPython-blue)
-![Focus](https://img.shields.io/badge/Foco-Network%20Security-red)
-![License](https://img.shields.io/badge/License-Academic-lightgrey)
+# 🔐 PoC: Wi-Fi Credential Harvesting
+### Exploração de Vulnerabilidades em Redes Wireless & Engenharia Social
+
+![Status](https://img.shields.io/badge/Status-Finalizado-success?style=for-the-badge&logo=git)
+![Tech](https://img.shields.io/badge/Tech-Python%20%7C%20Wireshark-blue?style=for-the-badge&logo=python)
+![Focus](https://img.shields.io/badge/Foco-Network%20Security-red?style=for-the-badge&logo=kali-linux)
+
+<br>
 
 > **⚠️ AVISO LEGAL (DISCLAIMER)**
-> Este repositório contém documentação e códigos desenvolvidos estritamente para fins acadêmicos na disciplina de **Redes de Computadores II**. Todas as demonstrações foram realizadas em ambiente controlado (Laboratório Virtual), utilizando dados fictícios (*mock data*) e dispositivos de propriedade dos autores. A interceptação de tráfego de terceiros sem consentimento é ilegal.
+> 
+> Este repositório contém documentação e códigos desenvolvidos estritamente para fins acadêmicos na disciplina de **Redes de Computadores II**. Todas as demonstrações foram realizadas em ambiente controlado (Laboratório Virtual), utilizando dados fictícios e dispositivos próprios.
+
+</div>
 
 ---
 
-## 📑 Sumário Executivo
-Este projeto apresenta uma Prova de Conceito (PoC) sobre a insegurança do protocolo **HTTP** em redes Wi-Fi públicas. O experimento simula um **Rogue Access Point** (Ponto de Acesso Malicioso) utilizando técnicas de Engenharia Social para contornar proteções de infraestrutura e capturar credenciais (PII) em texto claro (*Cleartext*).
+## 📑 1. Sumário Executivo
 
-### 🎯 Objetivos
-1.  Implementar um ambiente controlado de ataque em rede sem fio.
-2.  Demonstrar a vulnerabilidade de interceptação de dados em aplicações web sem criptografia (TLS/SSL).
-3.  Analisar pacotes de rede (`.pcap`) para evidenciar o vazamento de informações.
-4.  Propor medidas defensivas e contramedidas técnicas.
+Este projeto apresenta uma Prova de Conceito (PoC) demonstrando a **insegurança do protocolo HTTP** em redes públicas. O experimento simula um ataque de *Rogue Access Point* (Ponto de Acesso Malicioso) combinado com Engenharia Social para capturar credenciais de usuários em texto claro (*Cleartext*).
+
+### 🎯 Objetivos do Projeto
+- [x] Criar um ambiente controlado de ataque Wireless.
+- [x] Demonstrar a interceptação de dados sem criptografia (TLS/SSL).
+- [x] Analisar o tráfego de rede (`.pcap`) com Wireshark.
+- [x] Desenvolver medidas de mitigação (Defesa).
 
 ---
 
-## 🏗️ Arquitetura e Topologia
+## 🏗️ 2. Arquitetura e Topologia
 
-A infraestrutura foi desenhada para operar em um cenário de restrição de hardware, adotando uma abordagem híbrida de virtualização.
+O laboratório foi configurado utilizando uma abordagem híbrida para contornar restrições de hardware físico.
 
-| Componente | Especificação Técnica | Função no Laboratório |
+| Componente | Especificação | Função no Ataque |
 | :--- | :--- | :--- |
-| **Host Físico** | Windows 10/11 + Adaptador Intelbras IWA 3001 | Provedor de Acesso (SoftAP/Hotspot Móvel) |
-| **Atacante** | Kali Linux (VirtualBox - Modo Bridge) | Servidor Web (Python) + Sniffer (Wireshark) |
-| **Vítima** | Smartphone Android (Samsung S23 Ultra) | Cliente Wireless conectado ao Hotspot |
+| **🖥️ Host Físico** | Windows 10/11 + Adaptador Intelbras | **Infraestrutura:** Provedor de Acesso (Hotspot) |
+| **🏴‍☠️ Atacante** | Kali Linux (VirtualBox Bridge) | **Servidor:** Hospedagem do Phishing + Sniffer |
+| **📱 Vítima** | Smartphone Android (S23 Ultra) | **Cliente:** Conectado à rede maliciosa |
 
-### 📂 Estrutura do Repositório
-```bash
-├── 📂 src/
-│   └── index.html           # Front-end do Portal Falso (Clonagem de Interface)
-├── 📂 scripts/
-│   └── run_server.sh        # Script de automação do servidor Python (Porta 80)
-├── 📂 evidencias/
-│   ├── captura_anonima.pcap # Arquivo de prova (Sanitizado com tcprewrite)
-│   ├── print_portal.jpg     # Evidência visual da tela de login falsa
-│   └── print_wireshark.jpg  # Evidência da captura da senha
-└── README.md                # Documentação Técnica do Projeto
-⚙️ Metodologia de Execução
-1. Análise de Restrições (Justificativa Técnica)
-O plano inicial previa a execução de um ataque Man-in-the-Middle (MITM) via ARP Spoofing. Contudo, durante a fase de reconhecimento, identificou-se que o driver de Hotspot do Windows implementa nativamente o recurso de Isolamento de Cliente (Client Isolation).
+---
 
-Esta medida de segurança impede o roteamento de quadros de camada 2 entre clientes conectados ao mesmo SSID, mitigando ataques de envenenamento de cache ARP.
+## ⚙️ 3. Metodologia: O Desafio e a Solução
 
-2. Adaptação do Vetor de Ataque
-Para contornar a restrição de isolamento e cumprir o objetivo pedagógico, o grupo adotou uma estratégia de Engenharia Social Assistida:
+### 🔴 O Problema (Restrição de Infraestrutura)
+O plano original consistia em um ataque *Man-in-the-Middle* via **ARP Spoofing**. Contudo, identificamos que o driver de Hotspot do Windows implementa nativamente o **Isolamento de Cliente (Client Isolation)**.
+> *Isso impede que dispositivos na mesma rede Wi-Fi troquem pacotes diretamente, bloqueando a interceptação tradicional.*
 
-Deploy do Payload: Hospedagem de uma página de login falsa (simulando um portal de "Wi-Fi Visitante") na porta 80 da máquina atacante.
+### 🟢 A Solução (Engenharia Social)
+Para contornar o bloqueio, alteramos o vetor de ataque para **Phishing Assistido**:
 
-Indução (Trigger): Utilização de QR Codes físicos instruindo a vítima a "Escanear para Validar o Acesso". O QR Code aponta diretamente para o IP do atacante na rede local.
+1.  **O Isca:** Clonamos uma interface de "Login Wi-Fi Corporativo" (HTML/CSS).
+2.  **O Gatilho:** Utilizamos **QR Codes** físicos instruindo a vítima a *"Escanear para Liberar o Acesso"*. O link aponta diretamente para o IP do atacante.
+3.  **A Captura:** Com a vítima acessando o servidor do atacante, utilizamos o Wireshark na interface `eth0` para gravar os dados.
 
-Sniffing Passivo: Monitoramento da interface de rede eth0 para capturar as requisições HTTP POST enviadas pela vítima ao servidor do atacante.
+---
 
-📊 Resultados e Análise de Evidências
-A prova de conceito foi bem-sucedida. A ausência de criptografia no protocolo HTTP permitiu a leitura integral dos dados submetidos pelo usuário.
+## 📸 4. Evidências Visuais
 
-📸 Evidência 1: Interface da Vítima
-Abaixo, a interface apresentada ao usuário no momento da conexão, solicitando dados pessoais para "liberação" da rede:
+### A. A Interface da Vítima
+*Esta é a tela apresentada ao usuário ao escanear o QR Code:*
 
-(Simulação de Portal Corporativo com design responsivo)
+<div align="center">
+<br>
 
-🕵️ Evidência 2: Análise de Pacotes (.pcap)
-A análise do tráfego no Wireshark revela o payload da requisição POST. Como não há túnel TLS (HTTPS), os campos são visíveis em ASCII:
+🚧 ARRASTE O PRINT DO SITE FALSO AQUI E APAGUE ESTA LINHA 🚧
 
-Dados Extraídos (Cleartext):
+<br>
+</div>
 
-nome: [DADO CAPTURADO]
+### B. A Prova do Crime (Wireshark)
+*Captura do pacote HTTP POST contendo as credenciais em texto puro:*
 
-email: [DADO CAPTURADO]
+<div align="center">
+<br>
 
-cpf/tel: [DADO CAPTURADO]
+🚧 ARRASTE O PRINT DO WIRESHARK AQUI E APAGUE ESTA LINHA 🚧
 
-Nota de Privacidade e LGPD: O arquivo .pcap anexado a este repositório foi submetido a um processo de anonimização (sanitização) utilizando a ferramenta tcprewrite. Endereços MAC e IPs reais da infraestrutura foram mascarados e os dados de credenciais são fictícios.
+<br>
+</div>
 
-🛡️ Contramedidas e Mitigação
-Com base na vulnerabilidade explorada, recomendamos as seguintes defesas:
+---
 
-HTTPS Obrigatório (HSTS):
+## 📊 5. Análise dos Dados
 
-Servidores web devem implementar HSTS (HTTP Strict Transport Security) para forçar conexões criptografadas. Com HTTPS, os dados capturados no Wireshark estariam ilegíveis.
+Como não há túnel criptografado (HTTPS), os dados extraídos do arquivo `.pcap` são totalmente legíveis:
 
-Validação de Endpoint:
+```yaml
+[+] DADOS INTERCEPTADOS:
+------------------------
+Nome:     Kayan Paiva
+Email:    usuario@exemplo.com
+CPF:      123.456.789-00
+🔒 Nota de Privacidade: O arquivo .pcap anexado foi sanitizado via tcprewrite para mascarar IPs e MACs reais da infraestrutura.🛡️ 6. Contramedidas (Como se proteger)VulnerabilidadeSolução TécnicaFalta de CriptografiaImplementação de HTTPS (HSTS) obrigatório.Phishing LocalValidação de Endpoint. Nunca inserir dados em IPs numéricos.Sniffing em Wi-FiUso de VPN para encapsular o tráfego em túnel seguro.🚀 7. Como ReproduzirBash# 1. Clone o repositório
+git clone [https://github.com/SEU-USUARIO/NOME-DO-REPO.git](https://github.com/SEU-USUARIO/NOME-DO-REPO.git)
 
-Usuários devem ser treinados para verificar a URL. Acessar IPs numéricos (ex: 192.168...) em vez de domínios validados é um forte indício de ataque.
+# 2. Entre na pasta
+cd NOME-DO-REPO
 
-VPN (Rede Privada Virtual):
-
-O uso de VPN em redes públicas cria um túnel criptografado, protegendo os dados mesmo se a rede local estiver comprometida.
-
-🚀 Como Reproduzir este Laboratório
-Clone o repositório:
-
-Bash
-
-git clone [https://github.com/](https://github.com/)[SEU-USUARIO]/Exploracao-Vulnerabilidade-HTTP.git
-Acesse o diretório:
-
-Bash
-
-cd Exploracao-Vulnerabilidade-HTTP
-Execute o servidor (No Kali Linux):
-
-Bash
-
+# 3. Execute o servidor (Requer Python 3)
 chmod +x scripts/run_server.sh
-./scripts/run_server.sh
-Acesse via Cliente: Conecte outro dispositivo na mesma rede e acesse o IP da máquina atacante via navegador.
+sudo ./scripts/run_server.sh
+
+-----
+
+### 🎨 O que você precisa fazer agora (Checklist Final):
+
+1.  **Copie** o código acima e cole no seu GitHub.
+2.  **Substitua** onde diz `[Nome Amigo]` pelos nomes reais.
+3.  **Substitua** onde diz `SEU-USUARIO` pelo seu link do Git.
+4.  **O Mais Importante:**
+      * Apague a frase `🚧 ARRASTE O PRINT...`
+      * **Arraste a foto** do seu computador para aquele espaço em branco.
 
 👨‍💻 Autores
 Kayan Paiva Pereira
