@@ -51,6 +51,9 @@ O plano original consistia em um ataque *Man-in-the-Middle* via **ARP Spoofing**
 ### 🟢 A Solução (Engenharia Social)
 Para contornar o bloqueio, alteramos o vetor de ataque para **Phishing Assistido**:
 
+📸 QR Codes Utilizados na InduçãoEstes códigos simplificam a conexão e iniciam a simulação do ataque, contornando a falha de pop-up automático do Windows:
+<div align="center">QR Code de Conexão (Credibilidade)QR Code de Validação (O Ataque)Simula o acesso à rede (SSID) para credibilidade.Endereça a vítima diretamente ao nosso IP (http://192.168.137.177).🚧 ARRASTE O QR CODE DO WIFI AQUI 🚧🚧 ARRASTE O QR CODE DO LINK MALICIOSO AQUI 🚧<p><i>O QR Code da direita é o gatilho que inicia o ataque de captura de dados.</i></p></div>
+
 1.  **O Isca:** Clonamos uma interface de "Login Wi-Fi Corporativo" (HTML/CSS).
 2.  **O Gatilho:** Utilizamos **QR Codes** físicos instruindo a vítima a *"Escanear para Liberar o Acesso"*. O link aponta diretamente para o IP do atacante.
 3.  **A Captura:** Com a vítima acessando o servidor do atacante, utilizamos o Wireshark na interface `eth0` para gravar os dados.
