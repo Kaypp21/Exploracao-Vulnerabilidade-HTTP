@@ -58,8 +58,8 @@ A tabela a seguir apresenta as duas ferramentas visuais utilizadas na simulaçã
 
 | 1. QR Code de Conexão (Fase de Engano) | 2. QR Code de Validação (O Gatilho) |
 | :---: | :---: |
-| **Função:** Simula um acesso legítimo à rede e credibilidade. | **Função:** Redireciona a vítima ao IP do atacante (O ataque). |
-| ![Imagem do WhatsApp de 2025-11-18 à(s) 20 21 09_82ca3f28](https://github.com/user-attachments/assets/db48283d-af50-4adf-a4b0-ebf793f5e42c)| ![Imagem do WhatsApp de 2025-11-18 à(s) 20 20 14_afaf14ba](https://github.com/user-attachments/assets/9539c862-abc1-4f0b-8f35-b9ef2b9da797)|
+| **Função:** Simula um acesso legítimo à rede e credibilidade. | **Função:** Redireciona a vítima ao IP do atacante (`http://192.168.137.177`). |
+| <img src="https://me-qr.com/pt/qr-code-generator/wi-fi" width="200" height="200"> | <img src="https://www.contacta.com.br/blog/phishing-via-qr-code-o-que-e-e-como-se-proteger" width="200" height="200"> |
 
 <p>
     <i>O escaneamento do código da direita é a ação crítica que inicia a captura das credenciais.</i>
