@@ -186,15 +186,51 @@ A ausência de criptografia expõe completamente a confidencialidade dos dados e
 
 ## 🛠️ 9. Guia Completo de Reprodução
 
-### **1. Requisitos**
-
-- Windows com hotspot ativo  
-- Kali Linux em modo Bridge  
-- Dispositivo vítima conectado ao SSID de testes  
+Este guia explica detalhadamente como reproduzir todo o ambiente utilizado no experimento, incluindo cada configuração, termo técnico e etapas necessárias para simular a captura de dados enviados via HTTP.
 
 ---
 
-### **2. Servidor Malicioso**
+### 📌 1. Requisitos do Ambiente
+
+- **Windows com hotspot ativo:** o Windows funciona como roteador Wi-Fi, criando a rede onde o dispositivo vítima irá se conectar.  
+- **Kali Linux em modo Bridge:** a máquina virtual precisa estar configurada em *Bridge Mode* para receber um IP real da rede e conseguir interceptar tráfego.  
+- **Dispositivo vítima conectado no SSID:** pode ser um celular ou notebook, que acessará o site falso.  
+- **Wireshark instalado:** utilizado como analisador de pacotes.  
+- **Repositório do servidor malicioso clonado.**  
+
+---
+
+### 📌 2. Verificação e Configuração da Interface de Rede (Kali Linux)
+
+Antes de iniciar qualquer captura, é fundamental verificar se o Kali Linux está corretamente configurado na rede.
+
+Use o comando:
+
+```bash
+ifconfig
+```
+
+O que você precisa observar:
+
+- **Interface correta:** normalmente `eth0` (rede cabeada) ou `wlan0` (rede wi-fi).  
+- **Endereço IPv4 válido:** algo como `192.168.x.x`.  
+- **Gateway da rede:** confirma que o Kali realmente está dentro da rede criada pelo Windows.  
+- **Máscara de sub-rede (netmask):** geralmente `255.255.255.0`.  
+
+📍 **Cole aqui o print da sua configuração de rede (ifconfig ou print das configurações da VM):**
+```
+[COLE AQUI A IMAGEM DA CONFIGURAÇÃO DE REDE DO KALI]
+```
+
+Essas informações garantem que o Kali está **no mesmo segmento de rede do dispositivo vítima**, permitindo monitorar requisições HTTP enviadas por ele.
+
+---
+
+### 📌 3. Inicialização do Servidor HTTP Malicioso
+
+O servidor malicioso é responsável por hospedar a página falsa que será acessada pela vítima. Essa página está dentro do diretório `src/` do projeto.
+
+Execute:
 
 ```bash
 git clone https://github.com/Kaypp21/Exploracao-Vulnerabilidade-HTTP.git
@@ -202,19 +238,66 @@ cd Exploracao-Vulnerabilidade-HTTP
 sudo python3 -m http.server 80 --directory src/
 ```
 
+Explicações importantes:
+
+- **http.server:** módulo interno do Python que cria um servidor HTTP simples.  
+- **Porta 80:** porta padrão de navegação HTTP (não utiliza criptografia).  
+- **--directory src/:** especifica que o servidor deve disponibilizar os arquivos dentro da pasta `src/`.  
+- O arquivo **index.html** dentro dessa pasta será carregado automaticamente por quem acessar o IP do atacante.
+
 ---
 
-### **3. Captura de Pacotes**
+### 📌 4. Preparação da Captura no Wireshark
 
-- Abrir o Wireshark  
-- Selecionar a interface **eth0**  
-- Aplicar o filtro:
+Com o servidor rodando:
+
+1. Abra o **Wireshark**  
+2. Selecione a **interface correta** (a mesma que aparece no ifconfig)  
+3. Clique em **Start Capturing**  
+4. Aplique o filtro para visualizar somente POSTs:
 
 ```text
 http.request.method == POST
 ```
 
+Explicações:
+
+- **HTTP POST:** é o método usado quando um formulário envia dados para um servidor.  
+- O filtro ajuda a isolar apenas os pacotes que contêm informações enviadas pela vítima (como usuário e senha).  
+- Como é HTTP puro, os dados trafegam **sem criptografia**, permitindo visualizar tudo em texto claro.
+
 ---
+
+### 📌 5. Fluxo da Execução do Ataque
+
+Com o ambiente pronto, o passo a passo funciona assim:
+
+- A vítima escaneia o **QR Code** previamente gerado, que aponta para o IP do servidor malicioso.  
+- O navegador da vítima abre a página HTML falsa hospedada no Kali.  
+- Ela preenche o formulário acreditando ser legítimo.  
+- Ao clicar em *Enviar*, o navegador envia uma requisição HTTP POST.  
+- O Wireshark captura esse pacote imediatamente.  
+- Nos detalhes do pacote, é possível visualizar os campos enviados, como:
+
+```
+nome=teste123
+email=email@123.com
+numero de telefone=320000000
+```
+
+Isso demonstra a vulnerabilidade: **dados sensíveis podem ser roubados facilmente quando não há HTTPS**.
+
+---
+
+### 📌 6. Encerramento e Validação da Captura
+
+Após concluir o teste:
+
+- Pare a captura no Wireshark  
+- Analise os pacotes identificados  
+- Verifique o conteúdo enviado no POST em "Form Data" ou "Raw"  
+- Confirme que os dados foram transmitidos sem criptografia  
+- Documente a evidência conforme exigido no relatório 
 
 ### **4. Execução**
 
