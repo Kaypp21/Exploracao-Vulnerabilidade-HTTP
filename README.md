@@ -78,7 +78,7 @@ A tabela a seguir apresenta as duas ferramentas visuais utilizadas na simulaçã
 *A página de login de Wi-Fi, simulando um portal corporativo:*
 
 <div align="center">
-    <img src="https://github.com/Kaypp21/Exploracao-Vulnerabilidade-HTTP/blob/main/evidencias/print_portal.jpg">
+    <img src="https://github.com/Kaypp21/Exploracao-Vulnerabilidade-HTTP/blob/main/evidencias/print_portal.jpg" width="500" height="700">
     <br>
 </div>
 
