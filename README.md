@@ -38,7 +38,7 @@ O laboratório foi configurado utilizando uma abordagem híbrida para contornar 
 | :--- | :--- | :--- |
 | **🖥️ Host Físico** | Windows 10/11 + Adaptador Intelbras | **Infraestrutura:** Provedor de Acesso (Hotspot) |
 | **🏴‍☠️ Atacante** | Kali Linux (VirtualBox Bridge) | **Servidor:** Hospedagem do Phishing + Sniffer |
-| **📱 Vítima** | Smartphone Android (S23 Ultra) | **Cliente:** Conectado à rede maliciosa |
+| **📱 Vítima** | Smartphone/Computador | **Cliente:** Conectado à rede maliciosa |
 
 ---
 
