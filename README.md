@@ -70,70 +70,85 @@ A tabela a seguir apresenta as duas ferramentas visuais utilizadas na simulaçã
 2.  **O Gatilho:** Instruímos o usuário a "Escanear para Liberar o Acesso", direcionando-o ao IP do atacante.
 3.  **A Captura:** Com a vítima acessando o servidor, utilizamos o Wireshark na interface `eth0` para gravar os dados (senha, e-mail, etc.).
 
-## 📸 4. Evidências Visuais
+---
 
-### A. A Interface da Vítima
-*Esta é a tela apresentada ao usuário ao escanear o QR Code:*
+## 📸 4. Evidências e Prova Visual
+
+### A. Interface Apresentada à Vítima
+*A página de login de Wi-Fi, simulando um portal corporativo:*
 
 <div align="center">
-<br>
-
-![print_portal](https://github.com/user-attachments/assets/a27023d7-e74c-4842-b987-c28574f6eef1)
-
-<br>
+    ![print_portal](https://github.com/user-attachments/assets/a27023d7-e74c-4842-b987-c28574f6eef1)
+    <br>
 </div>
 
 ### B. A Prova do Crime (Wireshark)
-*Captura do pacote HTTP POST contendo as credenciais em texto puro:*
+*Captura do pacote HTTP POST contendo os dados pessoais em texto puro:*
 
 <div align="center">
-<br>
-
-🚧 ARRASTE O PRINT DO WIRESHARK AQUI E APAGUE ESTA LINHA 🚧
-
-<br>
+    🚧 ARRASTE O PRINT DO WIRESHARK AQUI 🚧
+    <br>
 </div>
 
-📊 4. Resultados e Análise de Evidências
-4.1. Dados Pessoais Interceptados (Payload)
-A ausência de criptografia (TLS/SSL) no protocolo HTTP permitiu a leitura integral do payload da requisição POST. O ataque foi bem-sucedido na captura dos seguintes Dados Pessoais Identificáveis (PII):
+---
 
-Nome Completo: Informação crucial para fins de engenharia social e validação de identidade.
+## 📊 5. Análise de Dados e Vulnerabilidade
 
-E-mail: Chave de acesso primária para redefinição de senhas e ataques futuros de phishing direcionado.
+### 5.1. Dados Pessoais Interceptados (Payload)
+A ausência de criptografia (TLS/SSL) no protocolo HTTP permitiu a leitura integral do *payload* da requisição POST. O ataque foi bem-sucedido na captura dos seguintes Dados Pessoais Identificáveis (PII):
 
-CPF/Telefone: Dado sensível que, quando combinado com nome e e-mail, permite a clonagem de identidade e acesso a serviços financeiros.
+* **Nome Completo:** Informação crucial para fins de engenharia social.
+* **E-mail:** Chave primária para redefinição de senhas.
+* **CPF/Telefone:** Dado sensível que permite a clonagem de identidade.
 
-Conclusão: O experimento comprovou a vulnerabilidade do protocolo na Camada de Aplicação (L7), permitindo que um atacante obtenha PII em trânsito de forma passiva.
+> **Conclusão:** O experimento comprovou a vulnerabilidade na Camada de Aplicação (L7), permitindo que um atacante obtenha PII em trânsito de forma passiva.
 
-4.2. Prova Visual do Vazamento
-Abaixo, a linha de comando (tcpdump/wireshark) que expõe o conteúdo do formulário:
+### 5.2. Dados Extraídos (Cleartext)
+*A tabela demonstra o vazamento da informação:*
 
-(Inserir Imagem do Wireshark com a linha do POST)
+| Campo Interceptado | Dado Capturado |
+| :--- | :--- |
+| **Nome Completo** | [DADO CAPTURADO] |
+| **E-mail** | [DADO CAPTURADO] |
+| **CPF/Telefone** | [DADO CAPTURADO] |
 
-🛡️ 6. Contramedidas e Mitigação (Blue Team)
+---
+
+## 🛡️ 6. Contramedidas e Mitigação (Blue Team)
+
 Para mitigar a vulnerabilidade demonstrada e proteger a rede contra ataques semelhantes, as seguintes medidas defensivas devem ser implementadas:
 
-1. Implementação de HTTPS (Criptografia de Transporte)
-Mecanismo: Utiliza o protocolo TLS/SSL (Transport Layer Security) para estabelecer um canal seguro, criptografando os dados no cliente antes que eles deixem o dispositivo.
+### 1. Implementação de HTTPS (Criptografia de Transporte)
+* **Mecanismo:** Utiliza o protocolo **TLS/SSL** (Transport Layer Security) para estabelecer um canal seguro, criptografando os dados no cliente.
+* **Efeito:** Mesmo que o atacante intercepte os pacotes na rede local, o conteúdo estaria ilegível, frustrando o ataque de captura de credenciais.
 
-Efeito: Mesmo que o atacante intercepte os pacotes na rede local (o que fizemos), o conteúdo (payload) estaria ilegível (ex: x8s7d8f7...), frustrando o ataque de captura de credenciais.
+### 2. Uso de VPN e Validação de Endpoint
+* **Mecanismo:** Ao utilizar uma **VPN (Rede Privada Virtual)**, todo o tráfego da vítima é encapsulado em um túnel criptografado, impedindo a leitura por terceiros na rede local.
+* **Mecanismo:** **HSTS** (HTTP Strict Transport Security) instrui o navegador a *nunca* carregar a página via HTTP, mitigando tentativas de downgrade ou acesso a links inseguros.
 
-2. Uso de VPN e Validação de Endpoint
-Mecanismo: Ao utilizar uma VPN (Rede Privada Virtual), todo o tráfego da vítima é encapsulado em um túnel criptografado que se estende para fora da rede local.
+### 3. Conscientização do Usuário
+* **Foco:** Treinar usuários para verificar a URL e a barra de segurança (cadeado verde/HTTPS) antes de inserir qualquer informação pessoal.
 
-Efeito: Impede que o atacante na rede do SoftAP leia o tráfego, pois ele é criptografado antes mesmo de chegar à interface Wi-Fi.
-
-3. Conscientização e HSTS (Defesa de Aplicação)
-Mecanismo: HSTS (HTTP Strict Transport Security) é uma política de segurança que instrui o navegador a nunca carregar a página via HTTP.
-
-Efeito: Isso mitiga ataques de downgrade ou tentativas de redirecionamento para o nosso servidor falso, pois o navegador exibirá um erro de segurança imediato e não confiável.
+---
 
 <div align="center">
 
-👨‍💻 Desenvolvido por
-Kayan Paiva Pereira • [Nome Amigo 2] • [Nome Amigo 3] • [Nome Amigo 4]
+### 👨‍💻 Desenvolvido por
+**Kayan Paiva Pereira** • [Nome Amigo 2] • [Nome Amigo 3] • [Nome Amigo 4]
 
-Trabalho apresentado ao curso de Sistemas de Informação - Novembro/2025
+<br>
+
+*Trabalho apresentado ao curso de Sistemas de Informação - Novembro/2025*
 
 </div>
+
+
+
+
+
+
+
+
+
+
+
