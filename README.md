@@ -217,7 +217,7 @@ O que você precisa observar:
 - **Gateway da rede:** confirma que o Kali realmente está dentro da rede criada pelo Windows.  
 - **Máscara de sub-rede (netmask):** geralmente `255.255.255.0`.  
 
-📍 ** print da sua configuração de rede (ifconfig ou print das configurações da VM):**
+📍 ** print da  configuração de rede (ifconfig ou print das configurações da VM):**
 
 <div align="center">
 <img src="https://github.com/Kaypp21/Exploracao-Vulnerabilidade-HTTP/blob/main/evidencias/configuracao_rede_kali.jpg" width="1000">
@@ -296,22 +296,53 @@ Isso demonstra a vulnerabilidade: **dados sensíveis podem ser roubados facilmen
 
 ---
 
-### 📌 6. Encerramento e Validação da Captura
+### 📌 6. Encerramento, Validação e Sanitização
 
-Após concluir o teste:
+Esta etapa final garante a integridade da prova (o roubo da senha) ao mesmo tempo que protege a privacidade da infraestrutura utilizada (ética hacker).
 
-- Pare a captura no Wireshark  
-- Analise os pacotes identificados  
-- Verifique o conteúdo enviado no POST em "Form Data" ou "Raw"  
-- Confirme que os dados foram transmitidos sem criptografia  
-- Documente a evidência conforme exigido no relatório 
+#### 1. Validação no Wireshark
+Antes de salvar, é necessário confirmar se o ataque funcionou:
+* **Ação:** Pare a captura (botão quadrado vermelho) e filtre por `http.request.method == POST`.
+* **Verificação:** Clique no pacote capturado e expanda a aba `HTML Form URL Encoded` no painel inferior.
+* **Confirmação:** Se os dados inseridos (Nome, E-mail, Telefone) estiverem legíveis, a captura foi bem-sucedida.
 
-### **4. Execução**
+#### 2. Salvamento do Arquivo Bruto (Raw)
+* Vá no menu `File` > `Save As...`.
+* Salve o arquivo como `captura_bruta.pcap`.
+> *⚠️ Atenção: Este arquivo contém seu IP e MAC Address reais. Não o envie publicamente.*
 
-- A vítima escaneia o QR Code  
-- Acessa o portal falso  
-- Preenche o formulário  
-- Os dados aparecem no Wireshark em tempo real  
+#### 3. Sanitização (Anonimização Obrigatória)
+Para cumprir os requisitos de privacidade, utilizaremos ferramentas para reescrever os cabeçalhos dos pacotes, mascarando a origem física e lógica.
+
+**Explicação dos Comandos:**
+
+```bash
+# 1. Instalação da Suite de Ferramentas
+# O 'tcpreplay' é um pacote que contém utilitários para editar e reproduzir tráfego de rede.
+sudo apt install tcpreplay -y
+
+# 2. Execução da Anonimização (Ferramenta tcprewrite)
+# Este comando lê o arquivo original, altera os dados sensíveis e cria um novo.
+tcprewrite --seed=42 --infile=captura_bruta.pcap --outfile=entrega_anonima.pcap
+```
+----------
+
+## 🔚 10. Finalização do Experimento
+
+Este experimento demonstrou, de forma prática e controlada, como a combinação entre **HTTP inseguro**, **engenharia social via QR Code** e um ambiente de rede simples pode resultar na **exposição completa de dados sensíveis** transmitidos pela vítima.  
+
+Ao configurar o hotspot no Windows e conectar o Kali Linux como atacante, foi possível criar um cenário funcional onde o fluxo de tráfego HTTP pôde ser inspecionado sem qualquer barreira criptográfica. A configuração da VM, da rede Bridge e do servidor HTTP permitiu reproduzir fielmente o comportamento observado em redes públicas e inseguras.
+
+A análise final no Wireshark evidenciou como informações como **nome, e-mail e telefone**, enviadas por um formulário HTML comum, ficam imediatamente legíveis quando o protocolo não utiliza TLS. Esse comportamento reforça não apenas a importância do **HTTPS**, mas também a necessidade de boas práticas de navegação e conscientização do usuário.
+
+O experimento foi concluído com sucesso, mostrando:
+
+- O funcionamento da captura de pacotes em ambiente real.  
+- A vulnerabilidade de aplicações que utilizam HTTP puro.  
+- O risco elevado quando a vítima é levada a acessar serviços falsificados.  
+- A importância de medidas de segurança como WPA3, HTTPS, HSTS e educação do usuário.
+
+Este material cumpre o objetivo de apresentar uma **Prova de Conceito (PoC)** totalmente replicável, fundamentada e alinhada às boas práticas de segurança cibernética, reforçando a necessidade de proteção tanto em redes pessoais quanto em ambientes corporativos.
 
 ---
 
