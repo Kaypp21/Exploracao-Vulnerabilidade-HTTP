@@ -94,31 +94,40 @@ A tabela a seguir apresenta as duas ferramentas visuais utilizadas na simulaçã
 <br>
 </div>
 
----
+📊 4. Resultados e Análise de Evidências
+4.1. Dados Pessoais Interceptados (Payload)
+A ausência de criptografia (TLS/SSL) no protocolo HTTP permitiu a leitura integral do payload da requisição POST. O ataque foi bem-sucedido na captura dos seguintes Dados Pessoais Identificáveis (PII):
 
-## 📊 5. Análise dos Dados
+Nome Completo: Informação crucial para fins de engenharia social e validação de identidade.
 
-Como não há túnel criptografado (HTTPS), os dados extraídos do arquivo `.pcap` são totalmente legíveis:
+E-mail: Chave de acesso primária para redefinição de senhas e ataques futuros de phishing direcionado.
 
-```yaml
-[+] DADOS INTERCEPTADOS:
-------------------------
-Nome:     
-Email:    
-CPF:      
+CPF/Telefone: Dado sensível que, quando combinado com nome e e-mail, permite a clonagem de identidade e acesso a serviços financeiros.
 
-🔒 Nota de Privacidade: O arquivo .pcap anexado foi sanitizado via tcprewrite para mascarar IPs e MACs reais da infraestrutura.🛡️ 6. Contramedidas (Como se proteger)VulnerabilidadeSolução TécnicaFalta de CriptografiaImplementação de HTTPS (HSTS) obrigatório.Phishing LocalValidação de Endpoint. Nunca inserir dados em IPs numéricos.Sniffing em Wi-FiUso de VPN para encapsular o tráfego em túnel seguro.
+Conclusão: O experimento comprovou a vulnerabilidade do protocolo na Camada de Aplicação (L7), permitindo que um atacante obtenha PII em trânsito de forma passiva.
 
-🚀 7. Como ReproduzirBash# 1. Clone o repositório
-git clone [https://github.com/Kaypp21/Exploracao-Vulnerabilidade-HTTP](https://github.com/Kaypp21/Exploracao-Vulnerabilidade-HTTP)
+4.2. Prova Visual do Vazamento
+Abaixo, a linha de comando (tcpdump/wireshark) que expõe o conteúdo do formulário:
 
-# 2. Entre na pasta
-cd NOME-DO-REPO
+(Inserir Imagem do Wireshark com a linha do POST)
 
-# 3. Execute o servidor (Requer Python 3)
-chmod +x scripts/run_server.sh
-sudo ./scripts/run_server.sh
-```
+🛡️ 6. Contramedidas e Mitigação (Blue Team)
+Para mitigar a vulnerabilidade demonstrada e proteger a rede contra ataques semelhantes, as seguintes medidas defensivas devem ser implementadas:
+
+1. Implementação de HTTPS (Criptografia de Transporte)
+Mecanismo: Utiliza o protocolo TLS/SSL (Transport Layer Security) para estabelecer um canal seguro, criptografando os dados no cliente antes que eles deixem o dispositivo.
+
+Efeito: Mesmo que o atacante intercepte os pacotes na rede local (o que fizemos), o conteúdo (payload) estaria ilegível (ex: x8s7d8f7...), frustrando o ataque de captura de credenciais.
+
+2. Uso de VPN e Validação de Endpoint
+Mecanismo: Ao utilizar uma VPN (Rede Privada Virtual), todo o tráfego da vítima é encapsulado em um túnel criptografado que se estende para fora da rede local.
+
+Efeito: Impede que o atacante na rede do SoftAP leia o tráfego, pois ele é criptografado antes mesmo de chegar à interface Wi-Fi.
+
+3. Conscientização e HSTS (Defesa de Aplicação)
+Mecanismo: HSTS (HTTP Strict Transport Security) é uma política de segurança que instrui o navegador a nunca carregar a página via HTTP.
+
+Efeito: Isso mitiga ataques de downgrade ou tentativas de redirecionamento para o nosso servidor falso, pois o navegador exibirá um erro de segurança imediato e não confiável.
 
 <div align="center">
 
