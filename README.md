@@ -169,6 +169,50 @@ Para mitigar a vulnerabilidade demonstrada e proteger a rede contra ataques seme
 * **Foco:** Treinar usuários para verificar a URL e a barra de segurança (cadeado verde/HTTPS) antes de inserir qualquer informação pessoal.
 
 ---
+## 🛠️ 7. Guia de Reprodução (Passo a Passo)
+
+Para replicar este laboratório de testes (Proof of Concept), siga as instruções abaixo.
+
+### Pré-requisitos
+* **Host:** Windows 10/11 com funcionalidade "Hotspot Móvel" ativa.
+* **VM Atacante:** Kali Linux (ou qualquer distro baseada em Debian) rodando em VirtualBox/VMware.
+    * *Configuração de Rede:* A VM deve estar em modo **Bridge (Ponte)** com o adaptador do Hotspot.
+* **Vítima:** Um smartphone conectado à rede Wi-Fi criada pelo Host.
+
+### Instalação e Execução
+
+**1. Clonar o Repositório**
+No terminal da máquina atacante (Kali), baixe os arquivos do projeto:
+```bash
+git clone [https://github.com/Kaypp21/Exploracao-Vulnerabilidade-HTTP.git](https://github.com/Kaypp21/Exploracao-Vulnerabilidade-HTTP.git)
+cd Exploracao-Vulnerabilidade-HTTP
+2. Iniciar o Servidor Malicioso Execute o servidor Python na porta 80 (requer privilégios de root):
+
+Bash
+
+sudo python3 -m http.server 80 --directory src/
+O terminal exibirá: Serving HTTP on 0.0.0.0 port 80.
+
+3. Preparar o Sniffer (Wireshark)
+
+Abra o Wireshark.
+
+Selecione a interface de rede principal (eth0).
+
+Aplique o filtro de visualização: http.request.method == POST.
+
+Inicie a captura (ícone azul).
+
+4. Executar o Cenário
+
+Conecte o dispositivo vítima ao Wi-Fi do Host.
+
+No navegador da vítima, acesse o endereço IP da máquina atacante (ex: http://192.168.137.XXX).
+
+Preencha os dados no formulário falso e clique em "Conectar".
+
+Observe a captura das credenciais imediatamente no Wireshark.
+-------
 
 <div align="center">
 
