@@ -216,7 +216,7 @@ Confirmação: O terminal exibirá Serving HTTP on 0.0.0.0 port 80. Mantenha est
 <div align="center">
 
 👨‍💻 Desenvolvido por
-Kayan Paiva Pereira • [Nome Amigo 2] • [Nome Amigo 3] • [Nome Amigo 4]
+Kayan Paiva Pereira • Enzo José Oliveira Pereira • Livya Silva de Carvalho • Nathan Massamb Belinato
 
 Trabalho apresentado ao curso de Sistemas de Informação - Novembro/2025
 
