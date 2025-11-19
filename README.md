@@ -199,11 +199,7 @@ Sem redirecionamento automático (como um captive portal real), o QR Code funcio
 A vítima preenche um formulário acreditando ser um cadastro padrão da rede.
 
 ## 🛡️ 6. Contramedidas e Mitigação 
-O envio ocorre com:
 
-Para mitigar a vulnerabilidade demonstrada e proteger a rede contra ataques semelhantes, as seguintes medidas defensivas devem ser implementadas:
-HTTP POST /login
-Content-Type: application/x-www-form-urlencoded
 
 ### 1. Implementação de HTTPS (Criptografia de Transporte)
 * **Mecanismo:** Utiliza o protocolo **TLS/SSL** (Transport Layer Security) para estabelecer um canal seguro, criptografando os dados no cliente.
@@ -235,7 +231,7 @@ Para replicar este laboratório de testes (*Proof of Concept*), siga as instruç
 A ausência de criptografia de transporte compromete a confidencialidade e expõe integralmente os dados inseridos pela vítima.
 
 ### 1. Preparação do Ambiente (Pré-requisitos)
-🛡️ 8. Contramedidas e Recomendações
+
 
 * **Infraestrutura:** Computador Host (Windows 10/11) com a funcionalidade "Hotspot Móvel" ativa.
 * **Máquina Atacante:** Kali Linux rodando em VirtualBox ou VMware.
