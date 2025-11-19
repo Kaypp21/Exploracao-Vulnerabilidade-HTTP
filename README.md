@@ -125,7 +125,7 @@ A vítima preenche o formulário de "Cadastro Wi-Fi" acreditando ser um procedim
 *Captura do pacote HTTP POST contendo os dados pessoais em texto puro:*
 
 <div align="center">
-    <img src="https://github.com/Kaypp21/Exploracao-Vulnerabilidade-HTTP/blob/main/evidencias/wireshark%20.jpg" width="1000" height="800">
+    <img src="https://github.com/Kaypp21/Exploracao-Vulnerabilidade-HTTP/blob/main/evidencias/wireshark1%20.jpg" width="1000" height="800">
     <br>
 </div>
 
