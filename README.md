@@ -90,28 +90,26 @@ sequenceDiagram
     V->>A: Envia Formulário (HTTP POST)
     Note right of A: 🚨 Captura de Senha/CPF (Texto Puro)
 ```
-Detalhamento Técnico das Fases:
-📡 Estágio 1: Reconhecimento Passivo (Conexão)
-Ao conectar-se ao Wi-Fi, o dispositivo da vítima envia pacotes de Broadcast e Multicast (ARP/mDNS) para se anunciar na rede.
+### 📝 Detalhamento Técnico das Fases
 
-O que acontece: O Wireshark captura passivamente esses pacotes.
+#### 📡 Estágio 1: Reconhecimento Passivo (Conexão)
+Ao conectar-se ao Wi-Fi, o dispositivo da vítima envia pacotes de *Broadcast* e *Multicast* (ARP/mDNS) para se anunciar na rede.
+* **O que acontece:** O Wireshark captura passivamente esses pacotes na interface de rede.
+* **Dados Vazados:** `Endereço MAC` (Camada 2) e `Endereço IP` (Camada 3).
+* **Impacto:** 🚨 Identificação física do hardware e rastreio de presença, quebrando a privacidade do usuário antes mesmo do login.
 
-Dados Vazados: Endereço MAC (Camada 2) e Endereço IP (Camada 3).
+#### 🔗 Estágio 2: A Isca (Engenharia Social)
+Devido ao bloqueio de redirecionamento automático do Windows (*Client Isolation*), utilizamos um vetor humano. A vítima é exposta a um QR Code com a mensagem *"Escaneie para Validar o Acesso"*.
+* **Técnica:** O QR Code atua como um link malicioso físico.
+* **Resultado:** Ao escaneá-lo, o usuário autoriza explicitamente a conexão com o servidor do atacante (`http://192.168.137.177`), contornando o firewall do Host.
 
-Impacto: Identificação física do hardware e rastreio de presença, quebrando a privacidade do usuário antes mesmo do login.
-
-🔗 Estágio 2: A Isca (Engenharia Social)
-Devido ao bloqueio de redirecionamento automático do Windows, utilizamos um vetor humano. A vítima é exposta a um QR Code com a mensagem "Escaneie para Validar o Acesso".
-
-Técnica: O QR Code atua como um link malicioso físico. Ao escaneá-lo, o usuário autoriza explicitamente a conexão com o servidor do atacante (http://192.168.137.177), contornando o firewall do Host.
-
-🔓 Estágio 3: Exfiltração de Dados (O Roubo)
-A vítima preenche o formulário de "Cadastro Wi-Fi" acreditando ser um procedimento padrão.
-
-A Vulnerabilidade: O navegador envia os dados via método HTTP POST. Como não há criptografia (SSL/TLS), os dados trafegam em texto puro (Cleartext).
-
-A Captura: O sniffer intercepta o pacote completo na interface de rede.
----
+#### 🔓 Estágio 3: Exfiltração de Dados (O Roubo)
+A vítima preenche o formulário de "Cadastro Wi-Fi" acreditando ser um procedimento padrão de autenticação.
+* **A Vulnerabilidade:** O navegador envia os dados via método **HTTP POST**.
+* **O Problema:** Como não há criptografia (SSL/TLS), os dados trafegam em **Texto Puro** (*Cleartext*).
+* **A Captura:** O sniffer intercepta o pacote completo, revelando Nome, E-mail e Senhas.
+  
+--------
 
 ## 📸 4. Evidências e Prova Visual
 
