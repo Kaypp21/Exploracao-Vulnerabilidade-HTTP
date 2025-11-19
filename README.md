@@ -86,7 +86,7 @@ A tabela a seguir apresenta as duas ferramentas visuais utilizadas na simulaçã
 *Captura do pacote HTTP POST contendo os dados pessoais em texto puro:*
 
 <div align="center">
-    🚧 ARRASTE O PRINT DO WIRESHARK AQUI 🚧
+    <img src="https://github.com/Kaypp21/Exploracao-Vulnerabilidade-HTTP/blob/main/evidencias/print_portal.jpg" width="1000" height="800">
     <br>
 </div>
 
