@@ -148,7 +148,7 @@ Abaixo, a classificação dos ativos comprometidos:
 **Evidência Visual:**
 *O print do Wireshark abaixo corrobora a falha, destacando a legibilidade dos campos no painel de inspeção:*
 <div align="center">
-    <img src="https://github.com/Kaypp21/Exploracao-Vulnerabilidade-HTTP/blob/main/evidencias/wireshark%20.jpg" width="1000" height="800">
+    <img src="https://github.com/Kaypp21/Exploracao-Vulnerabilidade-HTTP/blob/main/evidencias/dados_shark.jpg" width="1000" height="800">
     <br>
 </div>
 ---
