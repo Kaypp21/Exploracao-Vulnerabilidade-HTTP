@@ -66,10 +66,52 @@ A tabela a seguir apresenta as duas ferramentas visuais utilizadas na simulaçã
 </p>
 </div>
 
-1.  **O Isca:** Clonamos uma interface de "Login Wi-Fi Corporativo" (HTML/CSS).
-2.  **O Gatilho:** Instruímos o usuário a "Escanear para Liberar o Acesso", direcionando-o ao IP do atacante.
-3.  **A Captura:** Com a vítima acessando o servidor, utilizamos o Wireshark na interface `eth0` para gravar os dados (senha, e-mail, etc.).
+------
+## 🔄 . Ciclo de Vida do Ataque (Attack Lifecycle)
 
+O ataque ocorre em três estágios técnicos distintos. Abaixo, detalhamos o fluxo de dados e a vulnerabilidade explorada em cada fase:
+
+```mermaid
+sequenceDiagram
+    participant V as Vítima (Celular)
+    participant R as Roteador (Windows)
+    participant A as Atacante (Kali)
+
+    Note over V, R: Estágio 1: Reconhecimento
+    V->>R: Conecta no Wi-Fi
+    V->>A: Broadcast (ARP/mDNS)
+    Note right of A: 🚨 Captura de MAC e IP (Passiva)
+
+    Note over V, A: Estágio 2: Engenharia Social
+    V->>V: Escaneia QR Code
+    V->>A: Acessa Portal Falso (Porta 80)
+
+    Note over V, A: Estágio 3: Exfiltração
+    V->>A: Envia Formulário (HTTP POST)
+    Note right of A: 🚨 Captura de Dados (Texto Puro)
+------
+
+Detalhamento Técnico das Fases:
+📡 Estágio 1: Reconhecimento Passivo (Conexão)
+Ao conectar-se ao Wi-Fi, o dispositivo da vítima envia pacotes de Broadcast e Multicast (ARP/mDNS) para se anunciar na rede.
+
+O que acontece: O Wireshark captura passivamente esses pacotes.
+
+Dados Vazados: Endereço MAC (Camada 2) e Endereço IP (Camada 3).
+
+Impacto: Identificação física do hardware e rastreio de presença, quebrando a privacidade do usuário antes mesmo do login.
+
+🔗 Estágio 2: A Isca (Engenharia Social)
+Devido ao bloqueio de redirecionamento automático do Windows, utilizamos um vetor humano. A vítima é exposta a um QR Code com a mensagem "Escaneie para Validar o Acesso".
+
+Técnica: O QR Code atua como um link malicioso físico. Ao escaneá-lo, o usuário autoriza explicitamente a conexão com o servidor do atacante (http://192.168.137.177), contornando o firewall do Host.
+
+🔓 Estágio 3: Exfiltração de Dados (O Roubo)
+A vítima preenche o formulário de "Cadastro Wi-Fi" acreditando ser um procedimento padrão.
+
+A Vulnerabilidade: O navegador envia os dados via método HTTP POST. Como não há criptografia (SSL/TLS), os dados trafegam em texto puro (Cleartext).
+
+A Captura: O sniffer intercepta o pacote completo na interface de rede.
 ---
 
 ## 📸 4. Evidências e Prova Visual
