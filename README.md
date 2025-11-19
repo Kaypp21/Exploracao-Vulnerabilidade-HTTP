@@ -44,11 +44,12 @@ O laboratório foi configurado utilizando uma abordagem híbrida para contornar 
 ## ⚙️ 3. Metodologia: O Desafio e a Solução
 
 ### 🔴 O Problema (Restrição de Infraestrutura)
-O plano original consistia em um ataque *Man-in-the-Middle* via **ARP Spoofing**. Contudo, identificamos que o driver de Hotspot do Windows implementa nativamente o **Isolamento de Cliente (Client Isolation)**.
-> *Isso impede que dispositivos na mesma rede Wi-Fi troquem pacotes diretamente, bloqueando a interceptação tradicional.*
+O plano original baseava-se num ataque *Man-in-the-Middle* (MitM) via **ARP Spoofing**. Contudo, a infraestrutura revelou-se protegida, pois o *driver* de Hotspot do Windows ativa nativamente o **Isolamento de Cliente** (*Client Isolation*).
+> *Esta configuração de segurança impede que dispositivos ligados à mesma rede Wi-Fi comuniquem diretamente entre si (bloqueio Peer-to-Peer). Consequentemente, o atacante não consegue manipular a tabela ARP das vítimas, tornando a interceção de tráfego inviável.*
 
 ### 🟢 A Solução (Engenharia Social)
-Para contornar o bloqueio, alteramos o vetor de ataque para **Phishing Assistido**:
+Para ultrapassar esta barreira, o vetor de ataque foi alterado para **Phishing Assistido**, explorando a camada humana em vez da camada de rede.
+> *Ao invés de tentar capturar pacotes "no ar", a estratégia foca-se em persuadir o utilizador a fornecer voluntariamente as credenciais. Isto contorna as restrições de hardware, provando que a falha reside na confiança do utilizador.*
 
 #### 🔗 Ferramentas de Indução (QR Codes)
 A tabela a seguir apresenta as duas ferramentas visuais utilizadas na simulação para guiar a vítima ao servidor malicioso:
