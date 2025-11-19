@@ -153,7 +153,7 @@ Abaixo, a classificação dos ativos comprometidos:
 </div>
 ---
 
-## 🛡️ 6. Contramedidas e Mitigação (Blue Team)
+## 🛡️ 6. Contramedidas e Mitigação 
 
 Para mitigar a vulnerabilidade demonstrada e proteger a rede contra ataques semelhantes, as seguintes medidas defensivas devem ser implementadas:
 
@@ -171,49 +171,47 @@ Para mitigar a vulnerabilidade demonstrada e proteger a rede contra ataques seme
 ---
 ## 🛠️ 7. Guia de Reprodução (Passo a Passo)
 
-Para replicar este laboratório de testes (*Proof of Concept*), siga as instruções abaixo.
+Para replicar este laboratório de testes (*Proof of Concept*), siga as instruções detalhadas abaixo:
 
-### Pré-requisitos
-* **Host:** Windows 10/11 com funcionalidade "Hotspot Móvel" ativa.
-* **VM Atacante:** Kali Linux (ou distro Debian) rodando em VirtualBox/VMware.
-    * *Configuração de Rede:* A VM deve estar em modo **Bridge (Ponte)** com o adaptador do Hotspot.
+### 1. Preparação do Ambiente (Pré-requisitos)
+
+* **Infraestrutura:** Computador Host (Windows 10/11) com a funcionalidade "Hotspot Móvel" ativa.
+* **Máquina Atacante:** Kali Linux rodando em VirtualBox ou VMware.
+* **Rede:** A VM deve estar configurada obrigatoriamente em modo **Bridge (Ponte)** com o adaptador do Hotspot.
 * **Vítima:** Um smartphone conectado à rede Wi-Fi criada pelo Host.
 
----
+### 2. Configuração do Servidor de Ataque
 
-### 🚀 Instalação e Execução
+* **Download:** No terminal da máquina atacante, clone o repositório do projeto:
+  ```bash
+  git clone [https://github.com/Kaypp21/Exploracao-Vulnerabilidade-HTTP.git](https://github.com/Kaypp21/Exploracao-Vulnerabilidade-HTTP.git)
+  cd Exploracao-Vulnerabilidade-HTTP
+  ```
+Execução: Inicie o servidor web malicioso na porta 80 (requer privilégios de root):
 
-#### 1. Clonar o Repositório
-No terminal da máquina atacante (Kali), baixe os arquivos do projeto:
-
-```bash
-git clone https://github.com/Kaypp21/Exploracao-Vulnerabilidade-HTTP.git
-cd Exploracao-Vulnerabilidade-HTTP
-```
-2. Iniciar o Servidor Malicioso
-Execute o servidor Python na porta 80 (requer privilégios de root):
-```
 Bash
-sudo python3 -m http.server 80 --directory src/
-O terminal exibirá: Serving HTTP on 0.0.0.0 port 80.
 ```
-3. Preparar o Sniffer (Wireshark)
-Abra o Wireshark.
+sudo python3 -m http.server 80 --directory src/
+```
+Confirmação: O terminal exibirá Serving HTTP on 0.0.0.0 port 80. Mantenha esta janela aberta.
 
-Selecione a interface de rede principal (eth0).
+### 3. Configuração da Ferramenta de Captura
+* Ferramenta: Abra o Wireshark no Kali Linux.
 
-Aplique o filtro de visualização: http.request.method == POST.
+* Interface: Selecione a interface de rede principal (geralmente eth0).
 
-Inicie a captura (ícone da barbatana azul).
+* Filtro: Na barra superior, aplique o filtro http.request.method == POST para visualizar apenas o envio de dados.
 
-4. Executar o Cenário
-Conecte o dispositivo vítima ao Wi-Fi do Host.
+* Início: Clique no ícone azul para começar a captura (Sniffing).
 
-No navegador da vítima, acesse o endereço IP da máquina atacante (ex: http://192.168.137.XXX).
+### 4. Execução do Cenário (Exploit)
+* Acesso: No dispositivo da vítima, abra o navegador e digite o IP da máquina atacante (ex: http://192.168.137.XXX).
 
-Preencha os dados no formulário falso e clique em "Conectar".
+* Interação: Preencha os dados no formulário falso e clique no botão de conectar.
 
-Observe a captura das credenciais imediatamente no Wireshark.
+* Resultado: Observe os dados aparecendo imediatamente no painel do Wireshark.
+
+-------
 
 <div align="center">
 
