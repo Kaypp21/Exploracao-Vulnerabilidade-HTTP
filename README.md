@@ -131,26 +131,26 @@ A vítima preenche o formulário de "Cadastro Wi-Fi" acreditando ser um procedim
 
 ---
 
-## 📊 5. Análise de Dados e Vulnerabilidade
+## 📊 5. Análise de Exfiltração de Dados
 
-### 5.1. Dados Pessoais Interceptados (Payload)
-A ausência de criptografia (TLS/SSL) no protocolo HTTP permitiu a leitura integral do *payload* da requisição POST. O ataque foi bem-sucedido na captura dos seguintes Dados Pessoais Identificáveis (PII):
+Durante a fase de exploração, a infraestrutura de monitoramento interceptou **100% das requisições de autenticação**. A inspeção profunda dos pacotes (Deep Packet Inspection) revelou a violação do pilar de **Confidencialidade**, expondo dados de contato em texto puro.
 
-* **Nome Completo:** Informação crucial para fins de engenharia social.
-* **E-mail:** Chave primária para redefinição de senhas.
-* **CPF/Telefone:** Dado sensível que permite a clonagem de identidade.
+Abaixo, a classificação dos ativos comprometidos:
 
-> **Conclusão:** O experimento comprovou a vulnerabilidade na Camada de Aplicação (L7), permitindo que um atacante obtenha PII em trânsito de forma passiva.
+| Ativo (Campo) | Natureza do Dado | Classificação de Risco | Impacto Potencial |
+| :--- | :--- | :--- | :--- |
+| `txtNome` | Identificação | 🟠 **ALTO** | Engenharia Social e Perfilamento da Vítima. |
+| `txtEmail` | Login / Contato | 🟠 **ALTO** | Vetor para Phishing Direcionado e Spam. |
+| `txtTelefone` | **PII (Pessoal)** | 🔴 **CRÍTICO** | **Clonagem de WhatsApp, Smishing e Interceptação de SMS (2FA).** |
 
-### 5.2. Dados Extraídos (Cleartext)
-*A tabela demonstra o vazamento da informação:*
+> **Diagnóstico:** A ausência de criptografia de transporte (TLS) permitiu a leitura integral do payload. O vazamento do número de telefone expõe a vítima a ataques diretos em mensageiros instantâneos.
 
-| Campo Interceptado | Dado Capturado |
-| :--- | :--- |
-| **Nome Completo** | [DADO CAPTURADO] |
-| **E-mail** | [DADO CAPTURADO] |
-| **CPF/Telefone** | [DADO CAPTURADO] |
-
+**Evidência Visual:**
+*O print do Wireshark abaixo corrobora a falha, destacando a legibilidade dos campos no painel de inspeção:*
+<div align="center">
+    <img src="https://github.com/Kaypp21/Exploracao-Vulnerabilidade-HTTP/blob/main/evidencias/wireshark%20.jpg" width="1000" height="800">
+    <br>
+</div>
 ---
 
 ## 🛡️ 6. Contramedidas e Mitigação (Blue Team)
