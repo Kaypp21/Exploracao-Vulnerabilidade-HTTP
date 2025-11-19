@@ -61,7 +61,7 @@ Optou-se pela utilização de um **QR Code malicioso** para induzir a vítima a 
 | QR Code de Acesso | QR Code de "Validação" |
 |------------------|-------------------------|
 | Simula credibilidade | Redireciona para o atacante |
-| <img src="evidencias/wifi.jpg" width="200"> | <img src="evidencias/Site falso.jpg" width="200"> |
+| <img src="evidencias/wifi.jpg" width="200"> | <img src="evidencias/site falso.jpg" width="200"> |
 
 </div>
 
@@ -145,9 +145,9 @@ Como **não há TLS**, todo o conteúdo aparece no Wireshark em **texto legível
 
 | Campo     | Tipo de Dado           | Risco    | Impacto                                        |
 |-----------|-------------------------|----------|------------------------------------------------|
-| Nome      | Identificação           | Médio    | Perfilamento da vítima                         |
-| E-mail    | Credencial de acesso    | Alto     | Phishing e roubo de identidade                 |
-| Telefone  | PII sensível            | Crítico  | Golpes via engenharia social em mensageiros    |
+| Nome      | Identificação           |  *Médio    | Perfilamento da vítima                         |
+| E-mail    | Credencial de acesso    |  *Alto     | Phishing e roubo de identidade                 |
+| Telefone  | PII sensível            |  *Crítico  | Golpes via engenharia social em mensageiros    |
 
 **Diagnóstico:**  
 A ausência de criptografia expõe completamente a confidencialidade dos dados enviados pela vítima.
