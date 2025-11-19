@@ -89,6 +89,7 @@ sequenceDiagram
     Note over V, A: Estágio 3: Exfiltração
     V->>A: Envia Formulário (HTTP POST)
     Note right of A: 🚨 Captura de Senha/CPF (Texto Puro)
+```
 Detalhamento Técnico das Fases:
 📡 Estágio 1: Reconhecimento Passivo (Conexão)
 Ao conectar-se ao Wi-Fi, o dispositivo da vítima envia pacotes de Broadcast e Multicast (ARP/mDNS) para se anunciar na rede.
