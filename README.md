@@ -1,8 +1,7 @@
 # Exploracao-Vulnerabilidade-HTTP
 <div align="center">
 
-# 🔐 PoC: Wi-Fi Credential Harvesting
-### Exploração de Vulnerabilidades em Redes Wireless & Engenharia Social
+# 🔐 Exploração de Vulnerabilidades em Redes Wireless & Engenharia Social
 
 ![Status](https://img.shields.io/badge/Status-Finalizado-success?style=for-the-badge&logo=git)
 ![Tech](https://img.shields.io/badge/Tech-Python%20%7C%20Wireshark-blue?style=for-the-badge&logo=python)
