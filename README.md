@@ -67,7 +67,7 @@ A tabela a seguir apresenta as duas ferramentas visuais utilizadas na simulaçã
 </div>
 
 ------
-## 🔄 . Ciclo de Vida do Ataque (Attack Lifecycle)
+## 🔄. Ciclo de Vida do Ataque (Attack Lifecycle)
 
 O ataque ocorre em três estágios técnicos distintos. Abaixo, detalhamos o fluxo de dados e a vulnerabilidade explorada em cada fase:
 
@@ -88,9 +88,7 @@ sequenceDiagram
 
     Note over V, A: Estágio 3: Exfiltração
     V->>A: Envia Formulário (HTTP POST)
-    Note right of A: 🚨 Captura de Dados (Texto Puro)
-------
-
+    Note right of A: 🚨 Captura de Senha/CPF (Texto Puro)
 Detalhamento Técnico das Fases:
 📡 Estágio 1: Reconhecimento Passivo (Conexão)
 Ao conectar-se ao Wi-Fi, o dispositivo da vítima envia pacotes de Broadcast e Multicast (ARP/mDNS) para se anunciar na rede.
