@@ -286,6 +286,12 @@ email=email@123.com
 numero de telefone=320000000
 ```
 
+📸 **Visão do atacante (dados capturados no Wireshark):**
+
+<div align="center">
+<img src="evidencias/dados_shark.jpg" width="1000">
+</div>
+
 Isso demonstra a vulnerabilidade: **dados sensíveis podem ser roubados facilmente quando não há HTTPS**.
 
 ---
