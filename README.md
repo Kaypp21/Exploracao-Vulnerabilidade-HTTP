@@ -96,36 +96,22 @@ Isso inviabiliza o spoofing ARP, pois a vítima não recebe respostas ARP falsas
 Diante da impossibilidade de manipular o tráfego interno, adotou-se uma abordagem baseada no fator humano.
 
 ------
-## 🔄. Ciclo de Vida do Ataque (Attack Lifecycle)
-Vetor Utilizado: QR Code Malicioso
+## 🔄 Ciclo de Vida do Ataque (Attack Lifecycle)
 
 O ataque ocorre em três estágios técnicos distintos. Abaixo, detalhamos o fluxo de dados e a vulnerabilidade explorada em cada fase:
-Foram criados dois QR Codes com funções distintas:
 
 ```mermaid
-<div align="center">
-QR Code de Acesso	QR Code de Validação
-Simula credibilidade de acesso ao Wi-Fi	Redireciona ao IP do atacante (http://192.168.137.xxx)
-<img src="evidencias/wifi.jpg" width="200">	<img src="evidencias/site_falso.jpg" width="200">
-</div>
-🔄 4. Ciclo de Vida do Ataque
 sequenceDiagram
     participant V as Vítima (Celular)
     participant R as Roteador (Windows)
-    participant V as Vítima
-    participant R as Roteador (Hotspot)
     participant A as Atacante (Kali)
 
     Note over V, R: Estágio 1: Reconhecimento
     V->>R: Conecta no Wi-Fi
     V->>A: Broadcast (ARP/mDNS)
     Note right of A: 🚨 Captura de MAC e IP (Passiva)
-    Note over V, R: Estágio 1 - Reconhecimento
-    V->>R: Conexão ao Wi-Fi
-    V->>A: Broadcast ARP/mDNS (captura passiva)
 
     Note over V, A: Estágio 2: Engenharia Social
-    Note over V, A: Estágio 2 - Engenharia Social
     V->>V: Escaneia QR Code
     V->>A: Acessa Portal Falso (Porta 80)
 
@@ -133,6 +119,7 @@ sequenceDiagram
     V->>A: Envia Formulário (HTTP POST)
     Note right of A: 🚨 Captura de Senha/CPF (Texto Puro)
 ```
+
 ### 📝 Detalhamento Técnico das Fases
 
 #### 📡 Estágio 1: Reconhecimento Passivo (Conexão)
