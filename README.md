@@ -61,7 +61,7 @@ Optou-se pela utilização de um **QR Code malicioso** para induzir a vítima a 
 | QR Code de Acesso | QR Code de "Validação" |
 |------------------|-------------------------|
 | Simula credibilidade | Redireciona para o atacante |
-| <img src="evidencias/wifi.jpg" width="200"> | <img src="evidencias/site_falso.jpg" width="200"> |
+| <img src="evidencias/wifi.jpg" width="200"> | <img src="evidencias/Site falso.jpg" width="200"> |
 
 </div>
 
@@ -136,7 +136,7 @@ Como **não há TLS**, todo o conteúdo aparece no Wireshark em **texto legível
 
 ### **6.2 Captura do POST no Wireshark**
 <div align="center">
-<img src="evidencias/wireshark1.jpg" width="700">
+<img src="evidencias/wireshark1 .jpg" width="700">
 </div>
 
 ---
