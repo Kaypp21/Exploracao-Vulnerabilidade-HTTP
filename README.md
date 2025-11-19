@@ -131,12 +131,12 @@ Como **não há TLS**, todo o conteúdo aparece no Wireshark em **texto legível
 
 ### **6.1 Portal Falso exibido à vítima**
 <div align="center">
-<img src="evidencias/print_portal.jpg" width="450">
+<img src="evidencias/print_portal.jpg" width="550">
 </div>
 
 ### **6.2 Captura do POST no Wireshark**
 <div align="center">
-<img src="evidencias/wireshark1 .jpg" width="700">
+<img src="evidencias/wireshark1 .jpg" width="1000">
 </div>
 
 ---
@@ -217,10 +217,11 @@ O que você precisa observar:
 - **Gateway da rede:** confirma que o Kali realmente está dentro da rede criada pelo Windows.  
 - **Máscara de sub-rede (netmask):** geralmente `255.255.255.0`.  
 
-📍 **Cole aqui o print da sua configuração de rede (ifconfig ou print das configurações da VM):**
-```
-[COLE AQUI A IMAGEM DA CONFIGURAÇÃO DE REDE DO KALI]
-```
+📍 ** print da sua configuração de rede (ifconfig ou print das configurações da VM):**
+
+<div align="center">
+<img src="https://github.com/Kaypp21/Exploracao-Vulnerabilidade-HTTP/blob/main/evidencias/configuracao_rede_kali.jpg" width="1000">
+</div>
 
 Essas informações garantem que o Kali está **no mesmo segmento de rede do dispositivo vítima**, permitindo monitorar requisições HTTP enviadas por ele.
 
